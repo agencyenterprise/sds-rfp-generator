@@ -8,5 +8,5 @@ export default {
   dbCredentials: {
     url: env.DATABASE_URL,
   },
-  tablesFilter: ["frp-generator_*"],
+  tablesFilter: ["rfp-generator_*"],
 } satisfies Config;
