@@ -16,8 +16,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+      <body className="h-screen bg-primary-foreground">
+        <TRPCReactProvider>
+          <div className="container mx-auto">{children}</div>
+        </TRPCReactProvider>
       </body>
     </html>
   );

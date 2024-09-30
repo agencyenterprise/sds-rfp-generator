@@ -1,219 +1,163 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Button } from "~/components/ui/button";
+import { Card } from "~/components/ui/card";
+import { useState } from "react";
+import {
+  GenerateRFPInput,
+  type GenerateRFPInput as FormSchema,
+} from "~/validators/rfp";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CalendarFoldIcon,
+  CheckIcon,
+  CircleDollarSignIcon,
+  FileText,
+  GoalIcon,
+  VoteIcon,
+} from "lucide-react";
+import { GoalStep } from "../components/generate-rfp/steps/goal";
+import { Form } from "~/components/ui/form";
+import { TimelineStep } from "../components/generate-rfp/steps/timeline";
+import { InvestmentStep } from "~/components/generate-rfp/steps/investment";
+import { RequirementsStep } from "~/components/generate-rfp/steps/requirements";
+import { cn } from "~/lib/utils";
+import { EvaluationCriteriaStep } from "~/components/generate-rfp/steps/evaluation-criteria";
+import saveAs from "file-saver";
 import { api } from "~/trpc/react";
-import { saveAs } from "file-saver";
-import { type GenerateRFPInput } from "~/server/api/routers/rfp";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
-import ReactMarkdown from "react-markdown";
-import { questions } from "./questions";
-import TextareaInput from "./_components/TextareaInput";
-import SelectInput from "./_components/SelectInput";
-import RadioInput from "./_components/RadioInput";
 
-const RFPGeneratorPage: React.FC = () => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [formData, setFormData] = useState<Record<string, string>>({});
-  const [generatedRFP, setGeneratedRFP] = useState<string | null>(null);
-  const generateRFPMutation = api.rfp.generate.useMutation();
-  const inputRef = useRef<
-    HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement
-  >(null);
+const steps = [
+  {
+    label: "Goal",
+    icon: GoalIcon,
+    form: <GoalStep />,
+  },
+  { label: "Timeline", icon: CalendarFoldIcon, form: <TimelineStep /> },
+  { label: "Investment", icon: CircleDollarSignIcon, form: <InvestmentStep /> },
+  { label: "Requirements", icon: FileText, form: <RequirementsStep /> },
+  {
+    label: "Evaluation Criteria",
+    icon: VoteIcon,
+    form: <EvaluationCriteriaStep />,
+  },
+];
 
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-    if (
-      ["radio", "select"].includes(
-        questions[currentQuestionIndex]?.type as string,
-      )
-    ) {
-      setTimeout(handleNext, 500);
-    }
-  };
+export default function Home() {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const generate = api.rfp.generate.useMutation();
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      handleNext();
-    }
-  };
+  const form = useForm<FormSchema>({
+    resolver: zodResolver(GenerateRFPInput),
+    defaultValues: {
+      problemToSolve: "",
+      startDate: new Date(),
+      endDate: new Date(),
+      investmentRange: "",
+      hardRequirements: "",
+      softRequirements: "",
+      evaluationCriteria: "",
+      mostImportantCriteria: "",
+    },
+  });
 
-  const handleSubmit = useCallback(async () => {
-    if (generateRFPMutation.isPending) return;
+  async function onSubmit(values: FormSchema) {
     try {
-      const result = await generateRFPMutation.mutateAsync(
-        formData as GenerateRFPInput,
-      );
-      setGeneratedRFP(result.rfp);
+      const result = await generate.mutateAsync(values);
+      const blob = new Blob([result.rfp], { type: "text/markdown" });
+      saveAs(blob, "rfp.md");
     } catch (error) {
       console.error("Error generating RFP:", error);
     }
-  }, [formData, generateRFPMutation]);
+  }
 
-  const handlePrevious = useCallback(() => {
-    if (generateRFPMutation.isPending) return;
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+  function handlePrevious() {
+    setCurrentStep(currentStep - 1);
+  }
+
+  function handleNext() {
+    if (!completedSteps.includes(currentStep)) {
+      setCompletedSteps([...completedSteps, currentStep]);
     }
-  }, [currentQuestionIndex, generateRFPMutation.isPending]);
-
-  const handleNext = useCallback(() => {
-    if (generateRFPMutation.isPending) return;
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
-      void handleSubmit();
+    if (currentStep === steps.length - 1) {
+      void form.handleSubmit(onSubmit)();
+      return;
     }
-  }, [currentQuestionIndex, generateRFPMutation.isPending, handleSubmit]);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (generateRFPMutation.isPending) return;
-      if (event.key === "ArrowLeft") {
-        handlePrevious();
-      } else if (event.key === "ArrowRight") {
-        handleNext();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [
-    currentQuestionIndex,
-    generateRFPMutation.isPending,
-    handleNext,
-    handlePrevious,
-  ]);
-
-  const handleDownload = () => {
-    if (!generatedRFP) return;
-    const blob = new Blob([generatedRFP], { type: "text/markdown" });
-    saveAs(blob, "rfp.md");
-  };
-
-  const currentQuestion = questions[currentQuestionIndex];
+    setCurrentStep(currentStep + 1);
+  }
 
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
-      <div className="flex flex-grow items-center justify-center p-4">
-        <div className="w-full max-w-2xl text-gray-800">
-          {generatedRFP ? (
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-8 rounded-lg bg-white/80 p-8 shadow-lg backdrop-blur-sm"
-            >
-              <div>
-                <h2 className="mb-4 text-3xl font-bold text-purple-600">
-                  RFP Generated
-                </h2>
-                <p className="mb-4">
-                  Your RFP has been generated successfully.
-                </p>
-              </div>
-              <ReactMarkdown className="prose">{generatedRFP}</ReactMarkdown>
-              <motion.button
-                className="w-full rounded-lg bg-purple-600 p-4 text-xl font-bold text-white shadow-md hover:bg-purple-700"
-                onClick={handleDownload}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Download RFP
-              </motion.button>
-            </motion.div>
-          ) : (
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentQuestion?.id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                transition={{ duration: 0.3 }}
-                className="text-center"
-                onAnimationComplete={() => inputRef.current?.focus()}
-              >
-                <h1 className="mb-12 text-3xl font-semibold text-purple-600">
-                  {currentQuestion?.label}
-                </h1>
-                {currentQuestion?.type === "textarea" && (
-                  <TextareaInput
-                    id={currentQuestion.id}
-                    value={formData[currentQuestion.id]! || ""}
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
-                    inputRef={inputRef as React.RefObject<HTMLTextAreaElement>}
-                  />
-                )}
-                {currentQuestion?.type === "select" && (
-                  <SelectInput
-                    id={currentQuestion.id}
-                    value={formData[currentQuestion.id]! || ""}
-                    onChange={handleInputChange}
-                    options={currentQuestion.options ?? []}
-                    inputRef={inputRef as React.RefObject<HTMLSelectElement>}
-                  />
-                )}
-                {currentQuestion?.type === "radio" && (
-                  <RadioInput
-                    id={currentQuestion.id}
-                    name={currentQuestion.id}
-                    value={formData[currentQuestion.id]! || ""}
-                    onChange={handleInputChange}
-                    options={currentQuestion.options ?? []}
-                    inputRef={inputRef as React.RefObject<HTMLInputElement>}
-                  />
-                )}
-              </motion.div>
-            </AnimatePresence>
-          )}
-        </div>
-      </div>
-      {!generatedRFP && (
-        <div className="p-4">
-          <div className="mx-auto flex max-w-2xl items-center justify-between">
-            <div className="text-gray-600">
-              Question {currentQuestionIndex + 1} of {questions.length}
-            </div>
-            <div className="flex space-x-4">
-              <motion.button
-                className="rounded-full bg-purple-600 px-8 py-3 text-xl font-bold text-white shadow-md hover:bg-purple-700 disabled:opacity-50"
-                onClick={handlePrevious}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                disabled={
-                  currentQuestionIndex === 0 || generateRFPMutation.isPending
-                }
-              >
-                <ArrowLeftIcon className="h-5 w-5" />
-              </motion.button>
-              <motion.button
-                className="rounded-full bg-purple-600 px-8 py-3 text-xl font-bold text-white shadow-md hover:bg-purple-700 disabled:opacity-50"
+    <div className="flex p-10">
+      {/* Navigation Sidebar */}
+      <aside className="w-64">
+        <nav>
+          <ul className="space-y-4">
+            {steps.map((item, index) => (
+              <li key={index} className="mb-2">
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    "w-full justify-start text-muted-foreground hover:text-primary",
+                    currentStep === index && "bg-secondary/80 text-primary",
+                  )}
+                  onClick={() => setCurrentStep(index)}
+                  disabled={generate.isPending}
+                >
+                  <item.icon className="mr-3 size-4" />
+                  <span>
+                    {index + 1}. {item.label}
+                  </span>
+                  {completedSteps.includes(index) && (
+                    <div className="ml-auto rounded-full bg-black p-1">
+                      <CheckIcon className="size-3 text-white" />
+                    </div>
+                  )}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 px-8">
+        <Card className="flex flex-col justify-between">
+          <div className="flex-1 px-20 py-10">
+            <h3 className="mb-10 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+              {steps[currentStep]?.label}
+            </h3>
+            <Form {...form}>
+              <form>{steps[currentStep]?.form}</form>
+            </Form>
+          </div>
+          <div className="border-t border-border px-20 py-4">
+            <div className="flex justify-between">
+              {currentStep > 0 && (
+                <Button
+                  variant="outline"
+                  onClick={handlePrevious}
+                  disabled={generate.isPending}
+                >
+                  <ArrowLeftIcon className="mr-2 size-4" />
+                  Previous
+                </Button>
+              )}
+              <Button
                 onClick={handleNext}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                disabled={generateRFPMutation.isPending}
+                className={currentStep === 0 ? "ml-auto" : ""}
+                disabled={generate.isPending}
               >
-                {generateRFPMutation.isPending ? (
-                  "Generating..."
-                ) : currentQuestionIndex < questions.length - 1 ? (
-                  <ArrowRightIcon className="h-5 w-5" />
-                ) : (
-                  "Generate RFP"
-                )}
-              </motion.button>
+                {currentStep === steps.length - 1 ? "Generate RFP" : "Next"}
+                <ArrowRightIcon className="ml-2 size-4" />
+              </Button>
             </div>
           </div>
-        </div>
-      )}
+        </Card>
+      </main>
     </div>
   );
-};
-
-export default RFPGeneratorPage;
+}
