@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 
 const Hero = () => (
-  <section className="mx-auto flex min-h-[80vsh] flex-col items-center overflow-x-hidden pt-16 text-center">
+  <section className="mx-auto flex min-h-[80vsh] flex-col items-center pt-16 text-center">
     <div className="absolute left-0 top-0 z-0 h-full w-[98.82svw] bg-gradient-to-b from-transparent to-black" />
     <div className="z-1 relative flex flex-col items-center max-md:max-w-full">
       <div className="flex max-w-[600px] flex-col">
@@ -27,7 +28,7 @@ const Hero = () => (
           <ArrowRightIcon className="h-3 w-3" />
         </div>
       </div>
-      <img
+      <Image
         loading="lazy"
         src="/screenshot.png"
         alt="Background image for RFP generator"
