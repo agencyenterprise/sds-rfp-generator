@@ -1,9 +1,10 @@
+import Image from "next/image";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 
 const Footer = () => (
   <footer className="flex flex-col items-center justify-center px-32 py-40 max-md:px-5 max-md:py-24">
     <div className="flex w-[150px] max-w-full flex-col">
-      <img
+      <Image
         loading="lazy"
         src="/ae-studio.svg"
         alt="Company logo"

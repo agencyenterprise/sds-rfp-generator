@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const Bento = () => (
   <section className="flex flex-col items-center px-10 py-20 max-md:px-5">
     <h2 className="w-[553px] text-center text-3xl font-medium leading-10 tracking-normal text-white max-md:max-w-full">
@@ -21,7 +23,7 @@ const Bento = () => (
         </div>
       </article>
       <article className="relative flex min-h-[400px] min-w-[240px] flex-1 shrink basis-0 flex-col items-start overflow-hidden rounded-xl px-10 pb-10 pt-72 max-md:max-w-full max-md:px-5 max-md:pt-24">
-        <img
+        <Image
           loading="lazy"
           src="/screenshot-tech.png"
           alt="Designed for tech"

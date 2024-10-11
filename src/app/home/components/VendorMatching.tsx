@@ -1,11 +1,12 @@
+import Image from "next/image";
 const VendorMatching = () => (
   <section className="flex flex-col px-8 max-md:pl-5">
     <div className="relative flex flex-col items-start overflow-hidden rounded-lg border border-solid border-white border-opacity-10 px-60 py-20 max-md:max-w-full max-md:px-5">
-      <img
+      <Image
         loading="lazy"
         src="/pattern.png"
         className="absolute left-2/4 top-2/4 z-0 aspect-[2.81] h-[518px] w-[1206px] max-w-full -translate-x-2/4 -translate-y-2/4 rounded-2xl object-contain"
-        alt=""
+        alt="Pattern Background"
       />
       <div className="absolute left-0 top-0 z-0 h-full w-full bg-gradient-to-b from-[#254DA4] to-transparent" />
       <div className="absolute left-2/4 top-2/4 z-0 flex h-[485px] min-h-[429px] w-[1121px] max-w-full -translate-x-2/4 -translate-y-2/4" />
