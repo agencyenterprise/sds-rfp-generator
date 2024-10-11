@@ -18,8 +18,8 @@ const VendorMatching = () => (
           Looking for the perfect vendor match? Be the first to try it!
         </p>
         <p className="mt-6 text-center text-base leading-7 tracking-normal text-white text-opacity-70 max-md:max-w-full">
-          Soon, our AI will instantly connect you with the top vendors tailored
-          to your project's needs. Join the waitlist!
+          {`Soon, our AI will instantly connect you with the top vendors tailored
+          to your project's needs. Join the waitlist!`}
         </p>
         <form className="relative mt-6 flex w-full items-start gap-2.5 self-center rounded-lg border border-solid border-white border-opacity-10 px-4 py-2">
           <label htmlFor="emailInput" className="sr-only">

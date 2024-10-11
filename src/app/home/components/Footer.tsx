@@ -13,7 +13,7 @@ const Footer = () => (
     </div>
     <section className="text-center text-white">
       <h1 className="mt-10 text-3xl font-medium leading-none tracking-normal max-md:max-w-full">
-        Let's create human agency
+        {"Let's create human agency"}
       </h1>
       <p className="mt-10 self-stretch text-xl leading-8 tracking-normal max-md:max-w-full">
         We are a development, data science, and design studio that partners with
