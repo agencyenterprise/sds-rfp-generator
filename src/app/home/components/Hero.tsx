@@ -29,10 +29,12 @@ const Hero = () => (
         </div>
       </div>
       <Image
+        className="aspect-[1.24] w-full rounded object-contain max-md:max-w-full"
         loading="lazy"
         src="/screenshot.png"
         alt="Background image for RFP generator"
-        className="aspect-[1.24] w-full rounded object-contain max-md:max-w-full"
+        width={1200}
+        height={960}
       />
     </div>
   </section>

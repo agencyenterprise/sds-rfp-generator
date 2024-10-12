@@ -8,10 +8,12 @@ const Bento = () => (
     <div className="mt-20 flex w-[1120px] max-w-full flex-wrap items-start gap-4 text-base tracking-normal max-md:mt-10">
       <article className="flex min-h-[400px] w-[260px] min-w-[240px] flex-col justify-between rounded-xl border border-solid border-white border-opacity-10 bg-black bg-opacity-10 px-4 py-10">
         <Image
+          className="aspect-square max-w-full self-center rounded-lg object-contain"
           loading="lazy"
           src="/lightning.png"
           alt="Minutes, not days"
-          className="aspect-square w-[200px] max-w-full self-center rounded-lg object-contain"
+          width={200}
+          height={200}
         />
         <div className="mt-8 flex w-full flex-col">
           <h3 className="font-medium leading-8 text-white">
@@ -24,10 +26,12 @@ const Bento = () => (
       </article>
       <article className="relative flex min-h-[400px] min-w-[240px] flex-1 shrink basis-0 flex-col items-start overflow-hidden rounded-xl px-10 pb-10 pt-72 max-md:max-w-full max-md:px-5 max-md:pt-24">
         <Image
+          className="absolute left-2/4 top-2/4 z-0 aspect-[2.11] max-w-full -translate-x-2/4 -translate-y-2/4 object-contain"
           loading="lazy"
           src="/screenshot-tech.png"
           alt="Designed for tech"
-          className="absolute left-2/4 top-2/4 z-0 aspect-[2.11] h-[400px] w-[844px] max-w-full -translate-x-2/4 -translate-y-2/4 object-contain"
+          width={844}
+          height={400}
         />
         <div className="absolute left-0 top-0 z-0 h-[100%] w-full bg-gradient-to-t from-[#254DA4] to-transparent" />
         <div className="z-0 flex w-[677px] max-w-full flex-col">
