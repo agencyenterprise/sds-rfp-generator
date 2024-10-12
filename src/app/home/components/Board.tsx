@@ -77,7 +77,7 @@ const Board = () => (
       ))}
     </div>
     <div className="mt-10 flex w-60 max-w-full flex-col items-center justify-center self-center overflow-hidden rounded-xl text-center text-sm font-medium leading-tight text-white">
-      <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-solid border-blue-700 bg-[linear-gradient(180deg,#2B7AFB_0%,#2174FD_100%,#213BFD_100%)] px-4 py-3 shadow-sm">
+      <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-solid border-blue-700 bg-gradient-to-b from-[#2B7AFB] via-[#2174FD] to-[#213BFD] px-4 py-3 shadow-sm hover:from-[#2979fc] hover:to-[#2979fc] hover:text-white">
         <span className="my-auto self-stretch">See all</span>
         <ArrowRightIcon className="h-4 w-4" />
       </button>

@@ -3,7 +3,13 @@ import { ArrowRightIcon } from "@heroicons/react/20/solid";
 
 const Header = () => (
   <header className="flex flex-wrap items-center justify-center gap-4 py-2 text-center text-sm font-medium leading-tight">
-    <Image className="h-41 w-41 rounded-full" src="/avatar.png" alt="Avatar" />
+    <Image
+      className="rounded-full"
+      width={41.5}
+      height={41.5}
+      src="/avatar.png"
+      alt="Avatar"
+    />
     <p className="text-white">
       <span className="font-bold">Made with ❤️ by </span>
       <a href="https://ae.studio" target="_blank">

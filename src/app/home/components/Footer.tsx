@@ -9,6 +9,8 @@ const Footer = () => (
         src="/ae-studio.svg"
         alt="Company logo"
         className="aspect-[4.17] w-full object-contain"
+        width={625}
+        height={150}
       />
     </div>
     <section className="text-center text-white">
@@ -22,12 +24,16 @@ const Footer = () => (
       </p>
     </section>
     <div className="mt-10 flex flex-col items-center justify-center overflow-hidden rounded-xl text-center text-sm font-medium leading-tight text-white">
-      <button className="flex items-center justify-center gap-2 rounded-lg border border-solid border-blue-700 bg-[linear-gradient(180deg,#2B7AFB_0%,#2174FD_100%,#213BFD_100%)] px-10 py-3 shadow-sm max-md:px-5">
+      <a
+        href="https://ae.studio"
+        target="_blank"
+        className="flex items-center justify-center gap-2 rounded-lg border border-solid border-blue-700 bg-gradient-to-b from-[#2B7AFB] via-[#2174FD] to-[#213BFD] px-10 py-3 shadow-sm hover:from-[#2979fc] hover:to-[#2979fc] hover:text-white max-md:px-5"
+      >
         <span className="my-auto self-stretch">
           Bring Your AI Vision to Life with Us
         </span>
         <ArrowRightIcon className="h-4 w-4" />
-      </button>
+      </a>
     </div>
   </footer>
 );
