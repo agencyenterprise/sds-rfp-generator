@@ -1,36 +1,42 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
+import { relations, sql } from "drizzle-orm";
+import { jsonb, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
+import { createId } from "@paralleldrive/cuid2";
 
-import { sql } from "drizzle-orm";
-import {
-  index,
-  pgTableCreator,
-  serial,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
+export const users = pgTable("users", {
+  id: varchar("id")
+    .primaryKey()
+    .$defaultFn(() => `user_${createId()}`),
+  userId: varchar("user_id"),
+  firstName: varchar("first_name"),
+  lastName: varchar("last_name"),
+  email: varchar("email"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
-export const createTable = pgTableCreator((name) => `rfp-generator_${name}`);
+export const usersRelations = relations(users, ({ many }) => ({
+  rfps: many(rfps),
+}));
 
-export const posts = createTable(
-  "post",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date(),
-    ),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
+export const rfps = pgTable("rfps", {
+  id: varchar("id")
+    .primaryKey()
+    .$defaultFn(() => `rfp_${createId()}`),
+  userId: varchar("user_id").references(() => users.id),
+  title: varchar("title"),
+  data: jsonb("data"),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
+
+export const rfpsRelations = relations(rfps, ({ one }) => ({
+  owner: one(users, {
+    fields: [rfps.userId],
+    references: [users.id],
   }),
-);
+}));
