@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+export const RFPIdInput = z.object({
+  id: z.string(),
+});
+
+export type RFPIdInput = z.infer<typeof RFPIdInput>;
+
 export const GenerateRFPInput = z.object({
   problemToSolve: z.string().optional(),
   startDate: z.date().optional(),
@@ -12,3 +18,10 @@ export const GenerateRFPInput = z.object({
 });
 
 export type GenerateRFPInput = z.infer<typeof GenerateRFPInput>;
+
+export const SaveRFPInput = z.object({
+  id: z.string(),
+  data: z.object({ file: z.string() }),
+});
+
+export type SaveRFPInput = z.infer<typeof SaveRFPInput>;

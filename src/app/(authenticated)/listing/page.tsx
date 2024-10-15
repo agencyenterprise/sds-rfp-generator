@@ -7,7 +7,9 @@ export default async function ListingPage() {
       <h1>All RFPs</h1>
       <ul>
         {rfps.map((rfp) => (
-          <li key={rfp.id}>{rfp.title}</li>
+          <li key={rfp.id}>
+            <a href={`/view/${rfp.id}`}>{rfp.id}</a>
+          </li>
         ))}
       </ul>
     </div>

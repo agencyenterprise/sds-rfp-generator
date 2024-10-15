@@ -25,7 +25,8 @@ export const rfps = pgTable("rfps", {
     .$defaultFn(() => `rfp_${createId()}`),
   userId: varchar("user_id").references(() => users.id),
   title: varchar("title"),
-  data: jsonb("data"),
+  data: jsonb("data").$type<{ file: string }>(),
+  publishedAt: timestamp("published_at", { withTimezone: true }),
   updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
     () => new Date(),
   ),
