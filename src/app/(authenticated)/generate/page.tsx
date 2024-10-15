@@ -1,15 +1,7 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { Button } from "~/components/ui/button";
-import { Card } from "~/components/ui/card";
-import { useState } from "react";
-import {
-  GenerateRFPInput,
-  type GenerateRFPInput as FormSchema,
-} from "~/validators/rfp";
+import saveAs from "file-saver";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -20,15 +12,23 @@ import {
   GoalIcon,
   VoteIcon,
 } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+
+import { EvaluationCriteriaStep } from "~/components/generate/steps/evaluation-criteria";
 import { GoalStep } from "~/components/generate/steps/goal";
-import { Form } from "~/components/ui/form";
-import { TimelineStep } from "~/components/generate/steps/timeline";
 import { InvestmentStep } from "~/components/generate/steps/investment";
 import { RequirementsStep } from "~/components/generate/steps/requirements";
+import { TimelineStep } from "~/components/generate/steps/timeline";
+import { Button } from "~/components/ui/button";
+import { Card } from "~/components/ui/card";
+import { Form } from "~/components/ui/form";
 import { cn } from "~/lib/utils";
-import { EvaluationCriteriaStep } from "~/components/generate/steps/evaluation-criteria";
-import saveAs from "file-saver";
 import { api } from "~/trpc/react";
+import {
+  type GenerateRFPInput as FormSchema,
+  GenerateRFPInput,
+} from "~/validators/rfp";
 
 const steps = [
   {

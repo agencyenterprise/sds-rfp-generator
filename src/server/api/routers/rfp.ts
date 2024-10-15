@@ -1,7 +1,9 @@
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import OpenAI from "openai";
 import { TRPCError } from "@trpc/server";
+import OpenAI from "openai";
+
 import { env } from "~/env";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { rfps } from "~/server/db/schema";
 import { GenerateRFPInput } from "~/validators/rfp";
 
 const openai = new OpenAI({
@@ -9,6 +11,9 @@ const openai = new OpenAI({
 });
 
 export const rfpRouter = createTRPCRouter({
+  list: publicProcedure.query(async ({ ctx }) => {
+    return ctx.db.select().from(rfps);
+  }),
   generate: publicProcedure
     .input(GenerateRFPInput)
     .mutation(async ({ input }) => {

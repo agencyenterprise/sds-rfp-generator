@@ -1,5 +1,19 @@
-import { redirect } from "next/navigation";
+import Bento from "../components/home/Bento";
+import Board from "../components/home/Board";
+import Footer from "../components/home/Footer";
+import Header from "../components/home/Header";
+import Hero from "../components/home/Hero";
+import VendorMatching from "../components/home/VendorMatching";
 
-export default function Home() {
-  redirect("/home");
-}
+const Home = () => (
+  <>
+    <Header />
+    <Hero />
+    <Bento />
+    <Board />
+    <VendorMatching />
+    <Footer />
+  </>
+);
+
+export default Home;
