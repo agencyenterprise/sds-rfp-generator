@@ -5,11 +5,12 @@ import {
   listPublishedRFPs,
   publishRFP,
   saveRFP,
+  unpublishRFP,
 } from "~/server/use-cases/rfp";
 import { GenerateRFPInput, RFPIdInput, SaveRFPInput } from "~/validators/rfp";
 
 export const rfpRouter = createTRPCRouter({
-  list: publicProcedure.query(listPublishedRFPs),
+  list: publicProcedure.query(async () => listPublishedRFPs()),
   generate: publicProcedure
     .input(GenerateRFPInput)
     .mutation(async ({ input }) => generateNewRFP(input)),
@@ -22,4 +23,7 @@ export const rfpRouter = createTRPCRouter({
   publish: publicProcedure
     .input(RFPIdInput)
     .mutation(async ({ input }) => publishRFP(input.id)),
+  unpublish: publicProcedure
+    .input(RFPIdInput)
+    .mutation(async ({ input }) => unpublishRFP(input.id)),
 });

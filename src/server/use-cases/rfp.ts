@@ -47,10 +47,19 @@ export async function saveRFP(input: SaveRFPInput) {
 export async function publishRFP(id: string) {
   const { userId } = auth().protect();
   const [user] = await db.select().from(users).where(eq(users.userId, userId));
-  const [updatedRfp] = await db
+  await db
     .update(rfps)
     .set({ publishedAt: new Date() })
     .where(and(eq(rfps.id, id), eq(rfps.userId, user!.id)))
     .returning();
-  return updatedRfp;
+}
+
+export async function unpublishRFP(id: string) {
+  const { userId } = auth().protect();
+  const [user] = await db.select().from(users).where(eq(users.userId, userId));
+  await db
+    .update(rfps)
+    .set({ publishedAt: null })
+    .where(and(eq(rfps.id, id), eq(rfps.userId, user!.id)))
+    .returning();
 }
