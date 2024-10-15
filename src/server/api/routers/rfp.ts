@@ -1,9 +1,10 @@
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import OpenAI from "openai";
 import { TRPCError } from "@trpc/server";
+import OpenAI from "openai";
+
 import { env } from "~/env";
-import { GenerateRFPInput } from "~/validators/rfp";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { rfps } from "~/server/db/schema";
+import { GenerateRFPInput } from "~/validators/rfp";
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,

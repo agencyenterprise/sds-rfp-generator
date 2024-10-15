@@ -1,6 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { db } from "~/server/db";
 import { NextResponse } from "next/server";
+
+import { db } from "~/server/db";
 import { users } from "~/server/db/schema";
 
 export async function GET(request: Request) {

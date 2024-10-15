@@ -1,6 +1,6 @@
+import { createId } from "@paralleldrive/cuid2";
 import { relations, sql } from "drizzle-orm";
 import { jsonb, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
-import { createId } from "@paralleldrive/cuid2";
 
 export const users = pgTable("users", {
   id: varchar("id")
