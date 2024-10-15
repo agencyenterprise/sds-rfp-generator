@@ -15,6 +15,13 @@
       "when": 1728998028381,
       "tag": "0001_military_exodus",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1729013960745,
+      "tag": "0002_minor_black_bird",
+      "breakpoints": true
     }
   ]
 }
