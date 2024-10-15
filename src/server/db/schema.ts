@@ -6,7 +6,7 @@ export const users = pgTable("users", {
   id: varchar("id")
     .primaryKey()
     .$defaultFn(() => `user_${createId()}`),
-  userId: varchar("user_id"),
+  userId: varchar("user_id").unique(),
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
   email: varchar("email"),

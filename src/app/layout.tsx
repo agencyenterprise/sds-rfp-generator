@@ -3,6 +3,8 @@ import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
+import { ClerkProvider } from "@clerk/nextjs";
+
 import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
@@ -17,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className="dark h-screen bg-primary-foreground">
-        <TRPCReactProvider>
-          <main className="container mx-auto">{children}</main>
-        </TRPCReactProvider>
+        <ClerkProvider>
+          <TRPCReactProvider>
+            <main className="container mx-auto">{children}</main>
+          </TRPCReactProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
