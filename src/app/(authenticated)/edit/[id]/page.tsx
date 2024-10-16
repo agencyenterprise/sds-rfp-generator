@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
+import { EditForm } from "~/components/edit/edit-form";
 import { PublishButton } from "~/components/edit/publish-button";
 import { api } from "~/trpc/server";
 
@@ -16,10 +17,7 @@ export default async function EditRFPPage({
         <h2>Edit RFP</h2>
         <PublishButton id={rfp.id} publishedAt={rfp.publishedAt} />
       </div>
-      <textarea
-        value={JSON.stringify(rfp.data, null, 2)}
-        className="h-screen w-full dark:bg-black"
-      />
+      <EditForm id={rfp.id} data={rfp.data} />
     </div>
   );
 }
