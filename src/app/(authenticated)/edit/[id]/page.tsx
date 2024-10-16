@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import ReactMarkdown from "react-markdown";
 
+import { EditForm } from "~/components/edit/edit-form";
 import { PublishButton } from "~/components/edit/publish-button";
 import { api } from "~/trpc/server";
 
@@ -17,9 +17,7 @@ export default async function EditRFPPage({
         <h2>Edit RFP</h2>
         <PublishButton id={rfp.id} publishedAt={rfp.publishedAt} />
       </div>
-      <div className="prose dark:prose-invert">
-        <ReactMarkdown>{rfp.data?.file}</ReactMarkdown>
-      </div>
+      <EditForm id={rfp.id} data={rfp.data} />
     </div>
   );
 }

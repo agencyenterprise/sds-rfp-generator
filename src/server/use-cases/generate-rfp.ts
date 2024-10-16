@@ -1,3 +1,4 @@
+import { auth } from "@clerk/nextjs/server";
 import OpenAI from "openai";
 
 import { env } from "~/env";
@@ -8,6 +9,7 @@ const openai = new OpenAI({
 });
 
 export async function generateRFP(input: GenerateRFPInput) {
+  auth().protect();
   const prompt = `
     Problem to solve: ${input.problemToSolve}
     Start Date: ${input.startDate?.toISOString()}
