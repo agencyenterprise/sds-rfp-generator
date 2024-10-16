@@ -1,25 +1,34 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { generateRFP } from "~/server/use-cases/generate-rfp";
 import {
-  generateNewRFP,
+  createRFP,
   getRFPById,
   listPublishedRFPs,
   publishRFP,
-  saveRFP,
   unpublishRFP,
+  updateRFP,
 } from "~/server/use-cases/rfp";
-import { GenerateRFPInput, RFPIdInput, SaveRFPInput } from "~/validators/rfp";
+import {
+  CreateRFPInput,
+  GenerateRFPInput,
+  RFPIdInput,
+  UpdateRFPInput,
+} from "~/validators/rfp";
 
 export const rfpRouter = createTRPCRouter({
-  list: publicProcedure.query(async () => listPublishedRFPs()),
   generate: publicProcedure
     .input(GenerateRFPInput)
-    .mutation(async ({ input }) => generateNewRFP(input)),
+    .mutation(async ({ input }) => generateRFP(input)),
+  create: publicProcedure
+    .input(CreateRFPInput)
+    .mutation(async ({ input }) => createRFP(input)),
   get: publicProcedure
     .input(RFPIdInput)
     .query(async ({ input }) => getRFPById(input.id)),
-  save: publicProcedure
-    .input(SaveRFPInput)
-    .mutation(async ({ input }) => saveRFP(input)),
+  update: publicProcedure
+    .input(UpdateRFPInput)
+    .mutation(async ({ input }) => updateRFP(input)),
+  list: publicProcedure.query(async () => listPublishedRFPs()),
   publish: publicProcedure
     .input(RFPIdInput)
     .mutation(async ({ input }) => publishRFP(input.id)),

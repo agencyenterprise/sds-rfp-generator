@@ -19,9 +19,15 @@ export const GenerateRFPInput = z.object({
 
 export type GenerateRFPInput = z.infer<typeof GenerateRFPInput>;
 
-export const SaveRFPInput = z.object({
+export const UpdateRFPInput = z.object({
   id: z.string(),
   data: z.object({ file: z.string() }),
 });
 
-export type SaveRFPInput = z.infer<typeof SaveRFPInput>;
+export type UpdateRFPInput = z.infer<typeof UpdateRFPInput>;
+
+export const CreateRFPInput = z.object({
+  data: z.object({ file: z.string() }),
+});
+
+export type CreateRFPInput = z.infer<typeof CreateRFPInput>;
