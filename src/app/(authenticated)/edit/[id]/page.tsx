@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import ReactMarkdown from "react-markdown";
 
 import { PublishButton } from "~/components/edit/publish-button";
 import { api } from "~/trpc/server";
@@ -17,9 +16,10 @@ export default async function EditRFPPage({
         <h2>Edit RFP</h2>
         <PublishButton id={rfp.id} publishedAt={rfp.publishedAt} />
       </div>
-      <div className="prose dark:prose-invert">
-        <ReactMarkdown>{rfp.data?.file}</ReactMarkdown>
-      </div>
+      <textarea
+        value={JSON.stringify(rfp.data, null, 2)}
+        className="h-screen w-full dark:bg-black"
+      />
     </div>
   );
 }

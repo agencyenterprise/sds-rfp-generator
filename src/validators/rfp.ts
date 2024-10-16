@@ -27,7 +27,7 @@ export const UpdateRFPInput = z.object({
 export type UpdateRFPInput = z.infer<typeof UpdateRFPInput>;
 
 export const CreateRFPInput = z.object({
-  data: z.object({ file: z.string() }),
+  fileUrl: z.string(),
 });
 
 export type CreateRFPInput = z.infer<typeof CreateRFPInput>;
