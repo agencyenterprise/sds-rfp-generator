@@ -10,7 +10,7 @@ const VendorMatching = () => (
         width={1206}
         height={518}
       />
-      <div className="absolute left-0 top-0 z-0 h-full w-full bg-gradient-to-b from-[#254DA4] to-transparent" />
+      <div className="absolute left-0 top-0 z-0 size-full bg-gradient-to-b from-[#254DA4] to-transparent" />
       <div className="absolute left-2/4 top-2/4 z-0 flex h-[485px] min-h-[429px] w-[1121px] max-w-full -translate-x-2/4 -translate-y-2/4" />
       <div className="z-0 flex w-full flex-col self-stretch max-md:max-w-full">
         <h2 className="self-center text-center text-6xl font-medium leading-none tracking-tighter text-white max-md:max-w-full max-md:text-4xl">
