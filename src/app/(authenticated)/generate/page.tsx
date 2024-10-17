@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { saveAs } from "file-saver";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -11,7 +12,6 @@ import {
   GoalIcon,
   VoteIcon,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -50,7 +50,6 @@ export default function Home() {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const generate = api.rfp.generate.useMutation();
-  const router = useRouter();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(GenerateRFPInput),
@@ -69,8 +68,8 @@ export default function Home() {
   async function onSubmit(values: FormSchema) {
     try {
       const result = await generate.mutateAsync(values);
-      if (result?.id) {
-        router.push(`/edit/${result.id}`);
+      if (result) {
+        saveAs(result, "generated-rfp.md");
       }
     } catch (error) {
       console.error("Error generating RFP:", error);
