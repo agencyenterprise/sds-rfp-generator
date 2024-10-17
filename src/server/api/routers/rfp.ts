@@ -11,6 +11,7 @@ import {
 import {
   CreateRFPInput,
   GenerateRFPInput,
+  ListRFPsInput,
   RFPIdInput,
   UpdateRFPInput,
 } from "~/validators/rfp";
@@ -28,7 +29,11 @@ export const rfpRouter = createTRPCRouter({
   update: publicProcedure
     .input(UpdateRFPInput)
     .mutation(async ({ input }) => updateRFP(input)),
-  list: publicProcedure.query(async () => listPublishedRFPs()),
+  list: publicProcedure
+    .input(ListRFPsInput)
+    .query(async ({ input }) =>
+      listPublishedRFPs(input.searchTerm, input.page, input.pageSize),
+    ),
   publish: publicProcedure
     .input(RFPIdInput)
     .mutation(async ({ input }) => publishRFP(input.id)),

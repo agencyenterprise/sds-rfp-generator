@@ -43,3 +43,17 @@ export const CreateRFPInput = z.object({
 });
 
 export type CreateRFPInput = z.infer<typeof CreateRFPInput>;
+
+export const SearchRFPsInput = z.object({
+  searchTerm: z.string(),
+});
+
+export type SearchRFPsInput = z.infer<typeof SearchRFPsInput>;
+
+export const ListRFPsInput = z.object({
+  searchTerm: z.string().optional(),
+  page: z.number().default(1),
+  pageSize: z.number().default(10),
+});
+
+export type ListRFPsInput = z.infer<typeof ListRFPsInput>;
