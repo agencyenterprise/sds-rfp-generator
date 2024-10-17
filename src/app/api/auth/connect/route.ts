@@ -27,8 +27,7 @@ export async function GET(request: Request) {
           email: user?.emailAddresses[0]!.emailAddress,
         },
       });
-    const previousUrl = request.headers.get("referer") ?? "/";
-    return NextResponse.redirect(previousUrl);
+    return NextResponse.redirect(new URL("/", request.url));
   } catch (error) {
     console.error("Error upserting user:", error);
     return new Response("Internal Server Error", { status: 500 });
