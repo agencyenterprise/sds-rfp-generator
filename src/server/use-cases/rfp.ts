@@ -6,6 +6,7 @@ import { type CreateRFPInput, type UpdateRFPInput } from "~/validators/rfp";
 
 import { db } from "../db";
 import { openai } from "../gateways/openai";
+import { sleep } from "../utils/sleep";
 import { getCurrentUser } from "./user";
 
 export async function listPublishedRFPs(
@@ -59,8 +60,7 @@ export async function createRFP(input: CreateRFPInput) {
   await openai.beta.threads.messages.create(thread.id, {
     role: "user",
     content: `
-      Extract data from the attached RFP document and return it in JSON format. 
-      Example output:
+      Extract data from the attached RFP document and return the following JSON format:
       {
         "budget": "500k - 800k USD",
         "category": "Software Development",
@@ -81,33 +81,42 @@ export async function createRFP(input: CreateRFPInput) {
       },
     ],
   });
-  const run = await openai.beta.threads.runs.createAndPoll(thread.id, {
+  const run = await openai.beta.threads.runs.create(thread.id, {
     assistant_id: "asst_VylZPsu4N5pOk9pBHsjaZ7Dw",
   });
   let rfpData;
-  if (run.status === "completed") {
-    const messages = await openai.beta.threads.messages.list(run.thread_id);
-    const [message] = messages.data;
-    if (message && message.content[0]?.type === "text") {
-      rfpData = message.content[0].text.value;
+  while (run.status !== "completed") {
+    await sleep(1000);
+    const updatedRun = await openai.beta.threads.runs.retrieve(
+      thread.id,
+      run.id,
+    );
+    if (updatedRun.status === "completed") {
+      const messages = await openai.beta.threads.messages.list(thread.id);
+      const [message] = messages.data;
+      if (message && message.content[0]?.type === "text") {
+        rfpData = message.content[0].text.value;
+      }
+      break;
+    } else if (updatedRun.status === "failed") {
+      throw new Error("OpenAI run failed");
     }
   }
   if (!rfpData) throw new Error("Failed to extract RFP content");
-  rfpData = rfpData
-    .replace(/^```json/, "")
-    .replace(/```$/, "")
-    .trim();
-  let parsedData;
+  const jsonRegex = /\{[\s\S]*\}/;
+  const jsonMatch = jsonRegex.exec(rfpData);
+  rfpData = jsonMatch ? jsonMatch[0] : rfpData;
+  let parsedData: Record<string, unknown> = {};
   try {
     parsedData = JSON.parse(rfpData) as Record<string, unknown>;
-  } catch (error) {
-    console.error("Failed to parse RFP data:", error);
-    throw new Error("Invalid RFP data format");
+  } catch {
+    console.log("Failed to parse RFP data:", rfpData);
   }
   const [rfp] = await db
     .insert(rfps)
     .values({
       userId: user.id,
+      title: parsedData.title as string,
       data: { ...parsedData, fileUrl: input.fileUrl },
     })
     .returning({ id: rfps.id });
