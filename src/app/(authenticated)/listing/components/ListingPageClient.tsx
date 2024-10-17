@@ -1,65 +1,95 @@
-"use client";
-import { useState } from "react";
-import mockRFPs from "../data/mockRFPs";
-
-interface RFP {
-  id: string;
-  data: Record<string, unknown> | null;
-  userId: string | null;
-  createdAt: Date;
-  title: string | null;
-  publishedAt: Date | null;
-  updatedAt: Date | null;
-}
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { RFP, Pagination } from "~/types/types";
 
 interface ListingPageClientProps {
   rfps: RFP[];
+  pagination: Pagination;
 }
 
-const ListingPageClient: React.FC<ListingPageClientProps> = ({ rfps }) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortOption, setSortOption] = useState("date");
+const ListingPageClient: React.FC<ListingPageClientProps> = ({
+  rfps,
+  pagination,
+}) => {
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState(
+    router.query.searchQuery || "",
+  );
+  const [sortOption, setSortOption] = useState(
+    router.query.sortOption || "date",
+  );
   const [displayMode, setDisplayMode] = useState("row");
+  const [currentPage, setCurrentPage] = useState(
+    Number(router.query.page) || pagination.currentPage,
+  );
+  const itemsPerPage = pagination.pageSize;
 
-  // TODO: Use `rfps` from props instead of `mockRFPs`
-  const filteredRfps = mockRFPs
-    .filter((rfp) =>
-      rfp.title.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
+  useEffect(() => {
+    const query = {
+      searchQuery,
+      sortOption,
+      page: currentPage.toString(),
+    };
+    router.push(
+      {
+        pathname: router.pathname,
+        query,
+      },
+      undefined,
+      { shallow: true },
+    );
+  }, [searchQuery, sortOption, currentPage]);
+
+  const filteredRfps = rfps
+    // TODO: Revise if applicable
+    // .filter((rfp) =>
+    //   rfp.id.toLowerCase().includes(searchQuery.toLowerCase())
+    // )
     .sort((a, b) => {
       if (sortOption === "date") {
-        try {
-          return (
-            new Date(b.publishedAt).getTime() -
-            new Date(a.publishedAt).getTime()
-          );
-        } catch (e) {
-          console.error("Error sorting by date", e);
-        }
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
       } else if (sortOption === "name") {
-        return a.title.localeCompare(b.title);
+        return a.id.localeCompare(b.id);
       }
       return 0;
     });
 
+  const totalPages = pagination.totalPages;
+  const paginatedRfps = filteredRfps.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="mb-2 text-2xl font-bold">Explore RFPs</h2>
-      <p className="mb-4 text-gray-700">
-        Discover opportunities, find the perfect match
-      </p>
+    <div>
+      <h2>Explore RFPs</h2>
+      <p>Discover opportunities, find the perfect match</p>
       <div className="mb-4 flex gap-4">
         <input
           type="text"
           placeholder="Search..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full rounded border p-2"
+          className="rounded border p-2"
         />
         <select
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
-          className="rounded border p-2 text-gray-600"
+          className="rounded border p-2"
         >
           <option value="date">Sort by Date</option>
           <option value="name">Sort by Name</option>
@@ -71,12 +101,8 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({ rfps }) => {
           Toggle {displayMode === "row" ? "Card" : "Row"} View
         </button>
       </div>
-      <ul
-        className={
-          displayMode === "card" ? "grid grid-cols-3 gap-4" : "list-none"
-        }
-      >
-        {filteredRfps.map((rfp) => (
+      <ul className={displayMode === "card" ? "grid grid-cols-3 gap-4" : ""}>
+        {paginatedRfps.map((rfp) => (
           <li
             key={rfp.id}
             className={
@@ -85,9 +111,11 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({ rfps }) => {
                 : "border-b p-2"
             }
           >
-            <a href={`/view/${rfp.id}`} className="block">
+            <a href={`/view/${rfp.id}`}>
               <h3 className="text-lg font-semibold">{rfp.title}</h3>
-              <p className="text-sm text-gray-600">{rfp.data?.description}</p>
+              <p className="text-sm text-gray-600">
+                {rfp.data?.description as String}
+              </p>
               <p className="text-sm text-gray-600">Created by: {rfp.userId}</p>
               <p className="text-sm text-gray-600">
                 Created at: {rfp.createdAt.toISOString()}
@@ -102,6 +130,25 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({ rfps }) => {
           </li>
         ))}
       </ul>
+      <div className="mt-4 flex justify-between">
+        <button
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+          className="rounded border p-2"
+        >
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="rounded border p-2"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
+import Image from "next/image";
 
 const Header = () => (
   <header className="flex flex-wrap items-center justify-center gap-4 py-2 text-center text-sm font-medium leading-tight">
@@ -22,7 +22,7 @@ const Header = () => (
       target="_blank"
       className="flex items-center justify-center gap-2 self-stretch rounded-lg border border-solid border-blue-700 bg-[linear-gradient(180deg,#2B7AFB_0%,#2174FD_100%,#213BFD_100%)] px-4 py-3 text-center text-sm font-medium leading-tight text-white shadow-sm"
     >
-      Learn more <ArrowRightIcon className="h-4 w-4" />
+      Learn more <ArrowRightIcon className="size-4" />
     </a>
   </header>
 );

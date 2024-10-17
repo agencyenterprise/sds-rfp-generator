@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
+import Image from "next/image";
 
 const Hero = () => (
   <section className="mx-auto flex min-h-[80vsh] flex-col items-center pt-16 text-center">
@@ -26,7 +26,7 @@ const Hero = () => (
           className="my-auto mt-8 flex items-center justify-center gap-1.5 self-stretch text-xs font-medium text-white"
         >
           <span>Or explore public RFPs</span>
-          <ArrowRightIcon className="h-3 w-3" />
+          <ArrowRightIcon className="size-3" />
         </a>
       </div>
       <Image
