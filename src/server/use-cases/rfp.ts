@@ -29,8 +29,7 @@ export async function createRFP(input: CreateRFPInput) {
   await openai.beta.threads.messages.create(thread.id, {
     role: "user",
     content: `
-      Extract data from the attached RFP document and return it in JSON format. 
-      Example output:
+      Extract data from the attached RFP document and return the following JSON format:
       {
         "budget": "500k - 800k USD",
         "category": "Software Development",
@@ -71,6 +70,7 @@ export async function createRFP(input: CreateRFPInput) {
   try {
     parsedData = JSON.parse(rfpData) as Record<string, unknown>;
   } catch (error) {
+    console.log("Failed to parse RFP data:", rfpData);
     console.error("Failed to parse RFP data:", error);
     throw new Error("Invalid RFP data format");
   }
@@ -78,6 +78,7 @@ export async function createRFP(input: CreateRFPInput) {
     .insert(rfps)
     .values({
       userId: user.id,
+      title: parsedData.title as string,
       data: { ...parsedData, fileUrl: input.fileUrl },
     })
     .returning({ id: rfps.id });
