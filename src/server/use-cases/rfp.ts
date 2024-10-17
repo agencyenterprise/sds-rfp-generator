@@ -73,17 +73,14 @@ export async function createRFP(input: CreateRFPInput) {
     }
   }
   if (!rfpData) throw new Error("Failed to extract RFP content");
-  rfpData = rfpData
-    .replace(/^```json/, "")
-    .replace(/```$/, "")
-    .trim();
-  let parsedData;
+  const jsonRegex = /\{[\s\S]*\}/;
+  const jsonMatch = jsonRegex.exec(rfpData);
+  rfpData = jsonMatch ? jsonMatch[0] : rfpData;
+  let parsedData: Record<string, unknown> = {};
   try {
     parsedData = JSON.parse(rfpData) as Record<string, unknown>;
-  } catch (error) {
+  } catch {
     console.log("Failed to parse RFP data:", rfpData);
-    console.error("Failed to parse RFP data:", error);
-    throw new Error("Invalid RFP data format");
   }
   const [rfp] = await db
     .insert(rfps)
