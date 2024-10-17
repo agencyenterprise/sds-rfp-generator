@@ -6,7 +6,6 @@ import { type CreateRFPInput, type UpdateRFPInput } from "~/validators/rfp";
 
 import { db } from "../db";
 import { openai } from "../gateways/openai";
-import { sleep } from "../utils/sleep";
 import { getCurrentUser } from "./user";
 
 export async function listPublishedRFPs(
@@ -56,61 +55,56 @@ export async function createRFP(input: CreateRFPInput) {
     }),
     purpose: "assistants",
   });
-  const thread = await openai.beta.threads.create();
-  await openai.beta.threads.messages.create(thread.id, {
-    role: "user",
-    content: `
-      Extract data from the attached RFP document and return the following JSON format:
+  const thread = await openai.beta.threads.create({
+    messages: [
       {
-        "budget": "500k - 800k USD",
-        "category": "Software Development",
-        "companyName": "Acme Corp",
-        "contactEmail": "info@acme.com",
-        "deadline": "2024-01-01"
-        "description": "We are looking for a vendor to build a website for us.",
-        "location": "New York, NY",
-        "subCategory": "Web Development",
-        "tags": ["web", "development", "design"],
-        "title": "Website Development",
-      }
-    `,
-    attachments: [
-      {
-        file_id: uploadedFile.id,
-        tools: [{ type: "file_search" }],
+        role: "user",
+        content: `
+          - Extract data from the attached RFP document and return it in JSON format. 
+          - Example output:
+          {
+            "budget": "500k - 800k USD",
+            "category": "Software Development",
+            "companyName": "Acme Corp",
+            "contactEmail": "info@acme.com",
+            "deadline": "2024-01-01"
+            "description": "We are looking for a vendor to build a website for us.",
+            "location": "New York, NY",
+            "subCategory": "Web Development",
+            "tags": ["web", "development", "design"],
+            "title": "Website Development",
+          }
+        `,
+        attachments: [
+          {
+            file_id: uploadedFile.id,
+            tools: [{ type: "file_search" }],
+          },
+        ],
       },
     ],
   });
-  const run = await openai.beta.threads.runs.create(thread.id, {
+  const run = await openai.beta.threads.runs.createAndPoll(thread.id, {
     assistant_id: "asst_VylZPsu4N5pOk9pBHsjaZ7Dw",
   });
-  let rfpData;
-  while (run.status !== "completed") {
-    await sleep(1000);
-    const updatedRun = await openai.beta.threads.runs.retrieve(
-      thread.id,
-      run.id,
-    );
-    if (updatedRun.status === "completed") {
-      const messages = await openai.beta.threads.messages.list(thread.id);
-      const [message] = messages.data;
-      if (message && message.content[0]?.type === "text") {
-        rfpData = message.content[0].text.value;
-      }
-      break;
-    } else if (updatedRun.status === "failed") {
-      throw new Error("OpenAI run failed");
-    }
+  const messages = await openai.beta.threads.messages.list(thread.id, {
+    run_id: run.id,
+  });
+  const message = messages.data.pop()!;
+  let rfpContent = "";
+  if (message.content?.[0]?.type === "text") {
+    const { text } = message.content[0];
+    const { value } = text;
+    rfpContent = value;
   }
-  if (!rfpData) throw new Error("Failed to extract RFP content");
   const jsonRegex = /\{[\s\S]*\}/;
-  const jsonMatch = jsonRegex.exec(rfpData);
-  rfpData = jsonMatch ? jsonMatch[0] : rfpData;
+  const jsonMatch = jsonRegex.exec(rfpContent);
+  rfpContent = jsonMatch ? jsonMatch[0] : rfpContent;
   let parsedData: Record<string, unknown> = {};
   try {
-    parsedData = JSON.parse(rfpData) as Record<string, unknown>;
+    parsedData = JSON.parse(rfpContent) as Record<string, unknown>;
   } catch {
-    console.log("Failed to parse RFP data:", rfpData);
+    console.log("Failed to parse RFP data:", rfpContent);
   }
   const [rfp] = await db
     .insert(rfps)
