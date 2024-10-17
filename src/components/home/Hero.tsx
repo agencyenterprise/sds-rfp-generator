@@ -21,12 +21,13 @@ const Hero = () => (
         >
           Generate your RFP for free
         </a>
-        <div className="mt-8 flex items-center justify-center gap-1.5 text-xs font-medium text-white">
-          <a href="#" className="my-auto self-stretch">
-            Or explore public RFPs
-          </a>
+        <a
+          href="/listing"
+          className="my-auto mt-8 flex items-center justify-center gap-1.5 self-stretch text-xs font-medium text-white"
+        >
+          <span>Or explore public RFPs</span>
           <ArrowRightIcon className="h-3 w-3" />
-        </div>
+        </a>
       </div>
       <Image
         className="aspect-[1.24] w-full rounded object-contain max-md:max-w-full"
