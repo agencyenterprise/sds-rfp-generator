@@ -1,17 +1,5 @@
-import { api } from "~/trpc/server";
+import ListingPageServer from "./components/ListingPageServer";
 
-export default async function ListingPage() {
-  const rfps = await api.rfp.list();
-  return (
-    <div>
-      <h1>All RFPs</h1>
-      <ul>
-        {rfps.map((rfp) => (
-          <li key={rfp.id}>
-            <a href={`/view/${rfp.id}`}>{rfp.id}</a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+export default function HomePage() {
+  return <ListingPageServer />;
 }
