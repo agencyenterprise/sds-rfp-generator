@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
+import Image from "next/image";
 
 const Footer = () => (
   <footer className="flex flex-col items-center justify-center px-32 py-40 max-md:px-5 max-md:py-24">
@@ -32,7 +32,7 @@ const Footer = () => (
         <span className="my-auto self-stretch">
           Bring Your AI Vision to Life with Us
         </span>
-        <ArrowRightIcon className="h-4 w-4" />
+        <ArrowRightIcon className="size-4" />
       </a>
     </div>
   </footer>

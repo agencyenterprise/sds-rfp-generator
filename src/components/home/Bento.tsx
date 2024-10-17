@@ -33,7 +33,7 @@ const Bento = () => (
           width={844}
           height={400}
         />
-        <div className="absolute left-0 top-0 z-0 h-[100%] w-full bg-gradient-to-t from-[#254DA4] to-transparent" />
+        <div className="absolute left-0 top-0 z-0 size-full bg-gradient-to-t from-[#254DA4] to-transparent" />
         <div className="z-0 flex w-[677px] max-w-full flex-col">
           <h3 className="font-medium leading-8 text-white max-md:max-w-full">
             Designed for tech

@@ -1,6 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
+import { env } from "~/env";
 import { db } from "~/server/db";
 import { users } from "~/server/db/schema";
 
@@ -27,7 +28,7 @@ export async function GET(request: Request) {
           email: user?.emailAddresses[0]!.emailAddress,
         },
       });
-    return NextResponse.redirect(new URL("/generate", request.url));
+    return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL));
   } catch (error) {
     console.error("Error upserting user:", error);
     return new Response("Internal Server Error", { status: 500 });

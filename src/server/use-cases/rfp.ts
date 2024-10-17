@@ -1,20 +1,50 @@
-import { and, eq, isNotNull } from "drizzle-orm";
-import OpenAI, { toFile } from "openai";
+import { and, eq, isNotNull, or, sql } from "drizzle-orm";
+import { toFile } from "openai";
 
 import { rfps } from "~/server/db/schema";
 import { type CreateRFPInput, type UpdateRFPInput } from "~/validators/rfp";
 
 import { db } from "../db";
+import { openai } from "../gateways/openai";
 import { sleep } from "../utils/sleep";
 import { getCurrentUser } from "./user";
 
-export async function listPublishedRFPs() {
-  return db.select().from(rfps).where(isNotNull(rfps.publishedAt));
+export async function listPublishedRFPs(
+  searchTerm?: string,
+  page = 1,
+  pageSize = 25,
+) {
+  const searchTermLower = searchTerm?.toLowerCase();
+  const offset = (page - 1) * pageSize;
+  const whereClause = and(
+    isNotNull(rfps.publishedAt),
+    searchTermLower
+      ? or(
+          sql`LOWER(title) LIKE ${`%${searchTermLower}%`}`,
+          sql`LOWER(CAST(data AS TEXT)) LIKE ${`%${searchTermLower}%`}`,
+        )
+      : undefined,
+  );
+  const [totalCount] = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(rfps)
+    .where(whereClause);
+  const results = await db
+    .select()
+    .from(rfps)
+    .where(whereClause)
+    .limit(pageSize)
+    .offset(offset);
+  return {
+    data: results,
+    pagination: {
+      currentPage: page,
+      pageSize,
+      totalCount: totalCount?.count ?? 0,
+      totalPages: Math.ceil((totalCount?.count ?? 0) / pageSize),
+    },
+  };
 }
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 export async function createRFP(input: CreateRFPInput) {
   const user = await getCurrentUser();
