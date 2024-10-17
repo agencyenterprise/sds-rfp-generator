@@ -1,4 +1,6 @@
-const mockRFPs = [
+import { RFP } from "~/types/types";
+
+const mockRFPs: RFP[] = [
   {
     id: "1",
     data: { description: "RFP for web development services" },
