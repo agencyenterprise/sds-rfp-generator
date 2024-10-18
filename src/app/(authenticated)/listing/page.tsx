@@ -1,6 +1,6 @@
 import { api } from "~/trpc/server";
 import { RFPResponse } from "~/types/types";
-import ListingPageClient from "./components/ListingPageClient";
+import ListingPageClient from "./ListingPageClient";
 
 interface ListingPageProps {
   searchParams: { [key: string]: string | string[] | undefined };
