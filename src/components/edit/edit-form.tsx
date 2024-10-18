@@ -133,10 +133,10 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
                 <Input
                   {...field}
                   type="date"
-                  value={
-                    field.value ? field.value.toISOString().split("T")[0] : ""
+                  value={field.value ? field.value.split("T")[0] : ""}
+                  onChange={(e) =>
+                    field.onChange(new Date(e.target.value).toISOString())
                   }
-                  onChange={(e) => field.onChange(new Date(e.target.value))}
                 />
               </FormControl>
               <FormMessage />

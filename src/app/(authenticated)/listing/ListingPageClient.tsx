@@ -211,7 +211,7 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
               <ListBulletIcon className="size-5" />
             </button>
             <a
-              href="/generate"
+              href="/create"
               className="inline-flex h-[42px] items-center justify-center gap-2 rounded-lg border border-[#164bd2] bg-gradient-to-b from-[#2b7afb] via-[#2174fd] to-[#213afd] px-4 py-3 shadow-inner"
             >
               <PlusIcon className="size-4" />
