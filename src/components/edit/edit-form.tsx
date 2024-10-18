@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type Tag, TagInput } from "emblor";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -8,7 +9,6 @@ import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,7 +25,6 @@ import {
 export function EditForm({ id, title, data }: UpdateRFPInput) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const editMutation = api.rfp.update.useMutation();
-
   const form = useForm<UpdateRFPInput>({
     resolver: zodResolver(FormSchema),
     defaultValues: { id, title, data },
@@ -162,17 +161,36 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
           control={form.control}
           name="data.tags"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tags</FormLabel>
+            <FormItem className="flex flex-col items-start">
+              <FormLabel className="text-left">Tags</FormLabel>
               <FormControl>
-                <Input
+                <TagInput
                   {...field}
+                  activeTagIndex={0}
+                  setActiveTagIndex={() => null}
                   placeholder="Enter tags separated by commas"
+                  tags={
+                    field.value?.map((tag) => ({
+                      id: tag,
+                      text: tag,
+                    })) as Tag[]
+                  }
+                  setTags={(newTags) => {
+                    const tags = Array.isArray(newTags)
+                      ? newTags.map((tag) => tag.text)
+                      : [];
+                    if (tags) field.onChange(tags);
+                  }}
+                  styleClasses={{
+                    tag: {
+                      body: "pl-2",
+                      closeButton: "px-2",
+                    },
+                    inlineTagsContainer:
+                      "dark:border-[#393f58] dark:bg-[#141828]",
+                  }}
                 />
               </FormControl>
-              <FormDescription>
-                Enter tags separated by commas (e.g., web, development, design)
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

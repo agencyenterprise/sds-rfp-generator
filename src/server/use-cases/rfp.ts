@@ -71,11 +71,15 @@ export async function createRFP(input: CreateRFPInput) {
             "category": "Software Development",
             "company": "Acme Corp",
             "contactEmail": "info@acme.com",
-            "deadline": "2024-10-20T17:00:00-07:00"
+            "deadline": "2024-10-20T17:00:00-07:00",
             "description": "We are looking for a vendor to build a website for us.",
             "location": "New York, NY",
-            "tags": ["web", "development", "design"],
-            "title": "Website Development",
+            "tags": [
+              "web",
+              "development",
+              "design"
+            ],
+            "title": "Website Development"
           }
         `,
         attachments: [
