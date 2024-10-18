@@ -3,7 +3,12 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { RFP, Pagination } from "~/types/types";
-import { ListBulletIcon, ViewColumnsIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ListBulletIcon,
+  ViewColumnsIcon,
+} from "@heroicons/react/24/outline";
 import SearchBar from "~/components/ui/searchbar";
 
 interface ListingPageClientProps {
@@ -175,11 +180,11 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
 
   return (
     <div>
-      <h2 className="mb-2 text-2xl font-bold">Explore RFPs</h2>
-      <p className="mb-4 text-gray-600">
+      <h2 className="mb-2 text-5xl font-medium leading-[65px]">Explore RFPs</h2>
+      <p className="mb-4 text-xl text-slate-400">
         Discover opportunities, find the perfect match
       </p>
-      <div className="mb-4 flex items-center justify-between gap-4">
+      <div className="mb-8 flex items-center justify-between gap-4 border border-transparent border-b-[#393F58] pb-8">
         <SearchBar
           value={searchQuery}
           onChange={setSearchQuery}
@@ -219,23 +224,37 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
           ),
         )}
       </ul>
-      <div className="mt-4 flex justify-between">
+      <div className="my-8 flex items-center justify-center gap-2 pb-8">
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
-          className="rounded border p-2"
+          className="my-auto flex min-h-[40px] items-center justify-center gap-1 self-stretch whitespace-nowrap rounded-md bg-white bg-opacity-0 py-2.5 pl-2.5 pr-4 text-sm font-medium leading-5 text-slate-400"
         >
-          Previous
+          <ArrowLeftIcon className="size-5" />
+          <span>Previous</span>
         </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+          (page) => (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              className={`my-auto h-10 min-h-[40px] w-10 self-stretch whitespace-nowrap rounded-md text-sm font-medium leading-5 ${
+                currentPage === page
+                  ? "bg-slate-800 text-neutral-50"
+                  : "bg-white bg-opacity-0 text-slate-400"
+              }`}
+            >
+              {page}
+            </button>
+          ),
+        )}
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
-          className="rounded border p-2"
+          className="my-auto flex min-h-[40px] items-center justify-center gap-1 self-stretch whitespace-nowrap rounded-md bg-white bg-opacity-0 py-2.5 pl-2.5 pr-4 text-sm font-medium leading-5 text-slate-400"
         >
-          Next
+          <span>Next</span>
+          <ArrowRightIcon className="size-4" />
         </button>
       </div>
     </div>
