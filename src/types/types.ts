@@ -3,7 +3,7 @@ export interface RFP {
   data: Record<string, unknown> | null;
   userId: string | null;
   createdAt: Date;
-  title: string | null;
+  title: string;
   publishedAt: Date | null;
   updatedAt: Date | null;
 }
