@@ -2,6 +2,7 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { generateRFP } from "~/server/use-cases/generate-rfp";
 import {
   createRFP,
+  deleteRFP,
   getRFPById,
   listPublishedRFPs,
   publishRFP,
@@ -40,4 +41,7 @@ export const rfpRouter = createTRPCRouter({
   unpublish: publicProcedure
     .input(RFPIdInput)
     .mutation(async ({ input }) => unpublishRFP(input.id)),
+  delete: publicProcedure
+    .input(RFPIdInput)
+    .mutation(async ({ input }) => deleteRFP(input.id)),
 });

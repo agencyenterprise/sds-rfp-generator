@@ -14,7 +14,9 @@ export default async function EditRFPPage({
   params: { id: string };
 }) {
   const rfp = await api.rfp.get({ id: params.id });
+
   if (!rfp) redirect("/404");
+
   return (
     <div className="mx-auto max-w-2xl">
       <div className="space-y-8">
@@ -25,7 +27,7 @@ export default async function EditRFPPage({
               Back
             </Link>
           </Button>
-          <PublishButton id={rfp.id} publishedAt={rfp.publishedAt} />
+          <PublishButton id={rfp.id} />
         </div>
         <header className="space-y-1.5">
           <h1 className="text-5xl font-medium text-white">Edit RFP</h1>
