@@ -24,7 +24,7 @@ export const RFPData = z.object({
   budget: z.string().min(1, "Budget is required"),
   category: z.string().min(1, "Category is required"),
   company: z.string().min(1, "Company name is required"),
-  deadline: z.date().optional(),
+  deadline: z.string().optional(),
   tags: z.array(z.string()).optional(),
   fileUrl: z.string().optional(),
   contactEmail: z.string().email("Invalid email address"),
