@@ -114,7 +114,28 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
               <FormItem>
                 <FormLabel>Budget</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="e.g. 500k - 800k USD" />
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a budget range" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[
+                        { value: "0-50k", label: "$0 - $50,000" },
+                        { value: "50k-100k", label: "$50,000 - $100,000" },
+                        { value: "100k-250k", label: "$100,000 - $250,000" },
+                        { value: "250k-500k", label: "$250,000 - $500,000" },
+                        { value: "500k-1m", label: "$500,000 - $1 million" },
+                        { value: "1m+", label: "$1 million+" },
+                      ].map(({ value, label }) => (
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
