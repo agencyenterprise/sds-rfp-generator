@@ -1,8 +1,8 @@
+import { ArrowDownTrayIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { EnvelopeIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import { redirect } from "next/navigation";
-import { api } from "~/trpc/server";
 
-import { ArrowLeftIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
-import { MapPinIcon, EnvelopeIcon } from "@heroicons/react/24/solid";
+import { api } from "~/trpc/server";
 
 export default async function ViewRFPPage({
   params,
@@ -17,7 +17,7 @@ export default async function ViewRFPPage({
         href="/listing"
         className="mb-8 inline-flex h-[42px] items-center justify-center gap-2 rounded-lg border border-[#35394d] bg-[#23283d] px-4 py-3"
       >
-        <div className="flex h-[15px] w-[15px] items-center justify-center">
+        <div className="flex size-[15px] items-center justify-center">
           <ArrowLeftIcon className="size-4 text-[#2388ff]" />
         </div>
         <div className="text-center text-sm font-medium leading-[18.20px] text-neutral-50">
@@ -85,18 +85,18 @@ export default async function ViewRFPPage({
                 <div className="text-base font-medium leading-tight text-neutral-50">
                   {rfp.data?.fileUrl.split("/").pop()}.pdf
                 </div>
-                <div className="flex items-center justify-center gap-2 rounded-lg border border-[#164bd2] bg-gradient-to-b from-[#2b7afb] via-[#2174fd] to-[#213afd] px-4 py-3 shadow shadow-inner">
-                  <div className="relative h-[15px] w-[15px]">
+                <a
+                  href={rfp.data?.fileUrl}
+                  download
+                  className="flex items-center justify-center gap-2 rounded-lg border border-[#164bd2] bg-gradient-to-b from-[#2b7afb] via-[#2174fd] to-[#213afd] px-4 py-3 shadow"
+                >
+                  <div className="relative size-[15px]">
                     <ArrowDownTrayIcon className="size-4" />
                   </div>
-                  <a
-                    href={rfp.data?.fileUrl}
-                    download
-                    className="text-center text-sm font-medium leading-[18.20px] text-white"
-                  >
+                  <span className="text-center text-sm font-medium leading-[18.20px] text-white">
                     Download
-                  </a>
-                </div>
+                  </span>
+                </a>
               </div>
               <iframe
                 width="100%"
@@ -113,7 +113,7 @@ export default async function ViewRFPPage({
             </div>
             <div className="flex flex-col items-start justify-start gap-3 self-stretch">
               <div className="inline-flex justify-start gap-1.5">
-                <div className="relative mt-1 h-6 w-6">
+                <div className="relative mt-1 size-6">
                   <MapPinIcon className="size-5 text-[#2388ff]" />
                 </div>
                 <div className="text-lg font-medium text-white">
@@ -121,7 +121,7 @@ export default async function ViewRFPPage({
                 </div>
               </div>
               <div className="inline-flex items-center justify-start gap-1.5 self-stretch">
-                <div className="relative h-6 w-6">
+                <div className="relative size-6">
                   <EnvelopeIcon className="size-5 text-[#2388ff]" />
                 </div>
                 <div className="text-lg font-medium leading-loose text-white">

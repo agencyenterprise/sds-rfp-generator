@@ -6,7 +6,7 @@ import Image from "next/image";
 const Hero = () => (
   <section className="mx-auto flex min-h-[80vsh] flex-col items-center pt-16 text-center">
     <div className="absolute left-0 top-0 z-0 h-full w-[98.82svw] bg-gradient-to-b from-transparent to-black" />
-    <div className="z-1 relative flex flex-col items-center max-md:max-w-full">
+    <div className="relative flex flex-col items-center max-md:max-w-full">
       <div className="flex max-w-[600px] flex-col">
         <h2 className="bg-gradient-to-b from-[#ffffff] to-[#2979fc] bg-clip-text text-7xl font-medium leading-[84px] tracking-tighter text-transparent max-md:max-w-full max-md:text-4xl max-md:leading-10">
           Your AI-powered <br /> RFP generator

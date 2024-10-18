@@ -6,7 +6,7 @@ const Bento = () => (
       Say goodbye to the confusing and time-consuming RFP craft
     </h2>
     <div className="mt-20 flex w-[1120px] max-w-full flex-wrap items-start gap-4 text-base tracking-normal max-md:mt-10">
-      <article className="flex min-h-[400px] w-[260px] min-w-[240px] flex-col justify-between rounded-xl border border-solid border-white border-opacity-10 bg-black bg-opacity-10 px-4 py-10">
+      <article className="flex min-h-[400px] w-[260px] min-w-[240px] flex-col justify-between rounded-xl border border-solid border-white/10 bg-black/10 px-4 py-10">
         <Image
           className="aspect-square max-w-full self-center rounded-lg object-contain"
           loading="lazy"

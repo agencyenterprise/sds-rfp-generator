@@ -1,7 +1,7 @@
 import Image from "next/image";
 const VendorMatching = () => (
-  <section className="flex flex-col">
-    <div className="relative flex flex-col items-start overflow-hidden rounded-lg border border-solid border-white border-opacity-10 px-8 py-20 max-md:max-w-full max-md:px-5">
+  <section className="container m-auto flex flex-col">
+    <div className="relative flex flex-col items-start overflow-hidden rounded-lg border border-solid border-white/0 px-8 py-20 max-md:max-w-full max-md:px-5">
       <Image
         className="absolute left-2/4 top-2/4 z-0 aspect-[2.81] max-w-full -translate-x-2/4 -translate-y-2/4 rounded-2xl object-contain"
         loading="lazy"
@@ -23,7 +23,7 @@ const VendorMatching = () => (
           {`Soon, our AI will instantly connect you with the top vendors tailored
           to your project's needs. Join the waitlist!`}
         </p>
-        <form className="relative mt-6 flex w-3/4 items-start gap-2.5 self-center rounded-lg border border-solid border-white border-opacity-10 px-4 py-2">
+        <form className="relative mt-6 flex w-3/4 items-start gap-2.5 self-center rounded-lg border border-solid border-white/10 px-4 py-2">
           <label htmlFor="emailInput" className="sr-only">
             Your email
           </label>

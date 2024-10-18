@@ -5,7 +5,7 @@ import { env } from "~/env";
 import { db } from "~/server/db";
 import { users } from "~/server/db/schema";
 
-export async function GET(request: Request) {
+export async function GET() {
   const { userId } = auth();
   if (!userId) {
     return new Response("Unauthorized", { status: 401 });

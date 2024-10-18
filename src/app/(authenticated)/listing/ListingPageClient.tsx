@@ -235,7 +235,7 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
-          className="my-auto flex min-h-[40px] items-center justify-center gap-1 self-stretch whitespace-nowrap rounded-md bg-white bg-opacity-0 py-2.5 pl-2.5 pr-4 text-sm font-medium leading-5 text-slate-400"
+          className="my-auto flex min-h-[40px] items-center justify-center gap-1 self-stretch whitespace-nowrap rounded-md bg-white/0 py-2.5 pl-2.5 pr-4 text-sm font-medium leading-5 text-slate-400"
         >
           <ArrowLeftIcon className="size-5" />
           <span>Previous</span>
@@ -248,7 +248,7 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
               className={`my-auto size-10 min-h-[40px] self-stretch whitespace-nowrap rounded-md text-sm font-medium leading-5 ${
                 currentPage === page
                   ? "bg-slate-800 text-neutral-50"
-                  : "bg-white bg-opacity-0 text-slate-400"
+                  : "bg-white/0 text-slate-400"
               }`}
             >
               {page}
@@ -258,7 +258,7 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
-          className="my-auto flex min-h-[40px] items-center justify-center gap-1 self-stretch whitespace-nowrap rounded-md bg-white bg-opacity-0 py-2.5 pl-2.5 pr-4 text-sm font-medium leading-5 text-slate-400"
+          className="my-auto flex min-h-[40px] items-center justify-center gap-1 self-stretch whitespace-nowrap rounded-md bg-white/0 py-2.5 pl-2.5 pr-4 text-sm font-medium leading-5 text-slate-400"
         >
           <span>Next</span>
           <ArrowRightIcon className="size-4" />

@@ -62,7 +62,7 @@ const RFPCard = ({ title, description, views }: RFPData) => (
 );
 
 const Board = () => (
-  <section className="flex flex-col justify-center pb-40 pt-20 max-md:pb-24">
+  <section className="container m-auto flex flex-col justify-center pb-40 pt-20 max-md:pb-24">
     <header className="flex w-full flex-col justify-center text-center text-white max-md:max-w-full">
       <h1 className="text-6xl font-medium leading-none tracking-tighter max-md:text-4xl">
         Explore RFPs
