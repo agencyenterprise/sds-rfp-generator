@@ -59,6 +59,9 @@ export default withUt({
           "5": "hsl(var(--chart-5))",
         },
       },
+      backgroundImage: {
+        glow: "url('/glow-background.png')",
+      },
     },
   },
   plugins: [typography, tailwindCssAnimate],

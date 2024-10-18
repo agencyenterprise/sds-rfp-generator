@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type Tag, TagInput } from "emblor";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -8,7 +9,6 @@ import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,10 +22,18 @@ import {
   type UpdateRFPInput,
 } from "~/validators/rfp";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import categories from "./categories.json";
+
 export function EditForm({ id, title, data }: UpdateRFPInput) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const editMutation = api.rfp.update.useMutation();
-
   const form = useForm<UpdateRFPInput>({
     resolver: zodResolver(FormSchema),
     defaultValues: { id, title, data },
@@ -44,7 +52,7 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="title"
@@ -71,32 +79,69 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="data.budget"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Budget</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="e.g. 500k - 800k USD" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="data.category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Category</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="data.category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="data.budget"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Budget</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a budget range" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[
+                        { value: "0-50k", label: "$0 - $50,000" },
+                        { value: "50k-100k", label: "$50,000 - $100,000" },
+                        { value: "100k-250k", label: "$100,000 - $250,000" },
+                        { value: "250k-500k", label: "$250,000 - $500,000" },
+                        { value: "500k-1m", label: "$500,000 - $1 million" },
+                        { value: "1m+", label: "$1 million+" },
+                      ].map(({ value, label }) => (
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="data.company"
@@ -160,24 +205,45 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
           control={form.control}
           name="data.tags"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tags</FormLabel>
+            <FormItem className="flex flex-col items-start">
+              <FormLabel className="text-left">Tags</FormLabel>
               <FormControl>
-                <Input
+                <TagInput
                   {...field}
+                  activeTagIndex={0}
+                  setActiveTagIndex={() => null}
                   placeholder="Enter tags separated by commas"
+                  tags={
+                    field.value?.map((tag) => ({
+                      id: tag,
+                      text: tag,
+                    })) as Tag[]
+                  }
+                  setTags={(newTags) => {
+                    const tags = Array.isArray(newTags)
+                      ? newTags.map((tag) => tag.text)
+                      : [];
+                    if (tags) field.onChange(tags);
+                  }}
+                  styleClasses={{
+                    tag: {
+                      body: "pl-2",
+                      closeButton: "px-2",
+                    },
+                    inlineTagsContainer:
+                      "dark:border-[#393f58] dark:bg-[#141828]",
+                  }}
                 />
               </FormControl>
-              <FormDescription>
-                Enter tags separated by commas (e.g., web, development, design)
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Saving..." : "Save"}
-        </Button>
+        <div className="flex justify-end">
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "Save"}
+          </Button>
+        </div>
       </form>
     </Form>
   );
