@@ -7,6 +7,7 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   ListBulletIcon,
+  PlusIcon,
   ViewColumnsIcon,
 } from "@heroicons/react/24/outline";
 import SearchBar from "~/components/ui/searchbar";
@@ -202,16 +203,25 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
           <div className="flex gap-2">
             <button
               onClick={() => setDisplayMode("card")}
-              className={`rounded border p-2 ${displayMode === "card" ? "bg-gray-600" : ""}`}
+              className={`rounded-lg border p-2 ${displayMode === "card" ? "bg-gray-600" : ""}`}
             >
               <ViewColumnsIcon className="h-5 w-5" />
             </button>
             <button
               onClick={() => setDisplayMode("row")}
-              className={`rounded border p-2 ${displayMode === "row" ? "bg-gray-600" : ""}`}
+              className={`rounded-lg border p-2 ${displayMode === "row" ? "bg-gray-600" : ""}`}
             >
               <ListBulletIcon className="h-5 w-5" />
             </button>
+            <a
+              href="/generate"
+              className="inline-flex h-[42px] items-center justify-center gap-2 rounded-lg border border-[#164bd2] bg-gradient-to-b from-[#2b7afb] via-[#2174fd] to-[#213afd] px-4 py-3 shadow shadow-inner"
+            >
+              <PlusIcon className="size-4" />
+              <div className="text-center text-sm font-medium leading-[18.20px] text-white">
+                <span>Create new RFP</span>
+              </div>
+            </a>
           </div>
         </div>
       </div>
