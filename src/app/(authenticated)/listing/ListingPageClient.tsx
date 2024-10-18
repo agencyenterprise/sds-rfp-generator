@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { RFP, Pagination } from "~/types/types";
-
+import { ListBulletIcon, ViewColumnsIcon } from "@heroicons/react/24/outline";
 import SearchBar from "~/components/ui/searchbar";
 
 interface ListingPageClientProps {
@@ -14,11 +14,11 @@ interface ListingPageClientProps {
   initialPage: string;
 }
 
-interface RFPCardProps {
+interface RFPItemProps {
   rfp: RFP;
 }
 
-const RFPcard = ({ rfp }: RFPCardProps) => (
+const RFPcard = ({ rfp }: RFPItemProps) => (
   <article className="flex flex-col justify-between overflow-hidden rounded-lg border border-solid border-slate-700 bg-slate-800 px-4 py-6 shadow-[4px_2px_4px_rgba(25,33,61,0.08)]">
     <div className="flex w-full flex-col">
       <header className="flex w-full flex-col">
@@ -54,7 +54,12 @@ const RFPcard = ({ rfp }: RFPCardProps) => (
             Deadline:
           </span>
           <time className="my-auto self-stretch text-red-400">
-            {(rfp.data?.deadline as string) ?? "N/A"}
+            {rfp.data?.deadline
+              ? new Date(rfp.data?.deadline as Date).toLocaleDateString(
+                  "en-US",
+                  { year: "numeric", month: "short", day: "numeric" },
+                )
+              : "N/A"}
           </time>
         </div>
         <div className="mt-3 text-orange-300">
@@ -65,7 +70,7 @@ const RFPcard = ({ rfp }: RFPCardProps) => (
   </article>
 );
 
-const RFProw = ({ rfp }: RFPCardProps) => (
+const RFProw = ({ rfp }: RFPItemProps) => (
   <li key={rfp.id} className={"border-b p-2"}>
     <a href={`/view/${rfp.id}`}>
       <h3 className="text-lg font-semibold">{rfp.title}</h3>
@@ -154,23 +159,29 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
           onChange={setSearchQuery}
           placeholder="Search for RFPs..."
         />
-        <div>
+        <div className="flex gap-2">
           <select
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
-            className="rounded border p-2"
+            className="rounded border bg-gray-800 p-2 text-gray-200"
           >
             <option value="date">Sort by Date</option>
             <option value="name">Sort by Name</option>
           </select>
-          <button
-            onClick={() =>
-              setDisplayMode(displayMode === "row" ? "card" : "row")
-            }
-            className="rounded border p-2"
-          >
-            Toggle {displayMode === "row" ? "Card" : "Row"} View
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setDisplayMode("card")}
+              className={`rounded border p-2 ${displayMode === "card" ? "bg-gray-600" : ""}`}
+            >
+              <ViewColumnsIcon className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => setDisplayMode("row")}
+              className={`rounded border p-2 ${displayMode === "row" ? "bg-gray-600" : ""}`}
+            >
+              <ListBulletIcon className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </div>
       <ul className={displayMode === "card" ? "grid grid-cols-4 gap-4" : ""}>

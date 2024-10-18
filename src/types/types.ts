@@ -1,6 +1,15 @@
+interface RFPData {
+  category?: string;
+  company?: string;
+  description?: string;
+  tags?: string[];
+  deadline?: Date;
+  budget?: string;
+}
+
 export interface RFP {
   id: string;
-  data: Record<string, unknown> | null;
+  data: Record<string, unknown> | RFPData | null;
   userId: string | null;
   createdAt: Date;
   title: string;

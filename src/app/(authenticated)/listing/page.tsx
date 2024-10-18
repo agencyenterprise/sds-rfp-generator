@@ -18,7 +18,7 @@ export default async function ListingPage({ searchParams }: ListingPageProps) {
     page: parseInt(page, 10),
   };
 
-  const response: RFPResponse = await api.rfp.list(input);
+  const response: RFPResponse = (await api.rfp.list(input)) as RFPResponse;
   const { data: rfps, pagination } = response;
 
   return (
