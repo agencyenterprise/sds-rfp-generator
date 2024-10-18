@@ -11,7 +11,7 @@ const SearchBar = ({
   placeholder = "Search...",
   onChange,
 }: SearchBarProps) => (
-  <div className="my-auto flex min-h-[40px] w-[318px] min-w-[240px] items-center self-stretch rounded-lg border border-solid border-slate-700 bg-slate-800 py-1.5 py-3 pl-3 pr-1.5 text-xs text-slate-500 shadow-sm">
+  <div className="my-auto flex min-h-[40px] w-[318px] min-w-[240px] items-center self-stretch rounded-lg border border-solid border-slate-700 bg-slate-800 py-3 pl-3 pr-1.5 text-xs text-slate-500 shadow-sm">
     <div className="my-auto flex items-center gap-1 self-stretch">
       <MagnifyingGlassIcon className="size-5" />
       <input

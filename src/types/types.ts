@@ -1,19 +1,12 @@
-interface RFPData {
-  category?: string;
-  company?: string;
-  description?: string;
-  tags?: string[];
-  deadline?: Date;
-  budget?: string;
-}
+import { type RFPData } from "~/validators/rfp";
 
 export interface RFP {
   id: string;
-  data: Record<string, unknown> | RFPData | null;
   userId: string | null;
-  createdAt: Date;
   title: string;
+  data: RFPData | null;
   publishedAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 }
 

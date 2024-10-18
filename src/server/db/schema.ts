@@ -2,6 +2,8 @@ import { createId } from "@paralleldrive/cuid2";
 import { relations, sql } from "drizzle-orm";
 import { jsonb, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
 
+import { type RFPData } from "~/validators/rfp";
+
 export const users = pgTable("users", {
   id: varchar("id")
     .primaryKey()
@@ -25,7 +27,7 @@ export const rfps = pgTable("rfps", {
     .$defaultFn(() => `rfp_${createId()}`),
   userId: varchar("user_id").references(() => users.id),
   title: varchar("title"),
-  data: jsonb("data").$type<Record<string, unknown>>(),
+  data: jsonb("data").$type<RFPData>(),
   publishedAt: timestamp("published_at", { withTimezone: true }),
   updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
     () => new Date(),

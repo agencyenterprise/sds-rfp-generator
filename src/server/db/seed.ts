@@ -1,20 +1,12 @@
-import { db } from "./index";
-import { rfps, users } from "./schema";
 import mockRFPs from "~/data/mockRFPs";
 
+import { db } from "./index";
+import { rfps } from "./schema";
+
 export async function seed() {
-  const [user] = await db
-    .insert(users)
-    .values({
-      email: "test@test.com",
-      firstName: "Test",
-      lastName: "User",
-    })
-    .returning();
-
   // Clear existing data
+  // eslint-disable-next-line drizzle/enforce-delete-with-where
   await db.delete(rfps);
-
   // Insert mock data
   await db.insert(rfps).values(mockRFPs);
 }

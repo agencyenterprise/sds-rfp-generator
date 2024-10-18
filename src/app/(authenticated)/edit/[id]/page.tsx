@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { EditForm } from "~/components/edit/edit-form";
 import { PublishButton } from "~/components/edit/publish-button";
 import { api } from "~/trpc/server";
-import { type UpdateRFPInput } from "~/validators/rfp";
 
 export default async function EditRFPPage({
   params,
@@ -18,7 +17,7 @@ export default async function EditRFPPage({
         <h2>Edit RFP</h2>
         <PublishButton id={rfp.id} publishedAt={rfp.publishedAt} />
       </div>
-      <EditForm id={rfp.id} data={rfp.data as UpdateRFPInput["data"]} />
+      <EditForm id={rfp.id} title={rfp.title!} data={rfp.data!} />
     </div>
   );
 }

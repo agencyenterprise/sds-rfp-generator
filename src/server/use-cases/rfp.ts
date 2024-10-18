@@ -2,7 +2,11 @@ import { and, eq, isNotNull, or, sql } from "drizzle-orm";
 import { toFile } from "openai";
 
 import { rfps } from "~/server/db/schema";
-import { type CreateRFPInput, type UpdateRFPInput } from "~/validators/rfp";
+import {
+  type CreateRFPInput,
+  type RFPData,
+  type UpdateRFPInput,
+} from "~/validators/rfp";
 
 import { db } from "../db";
 import { openai } from "../gateways/openai";
@@ -65,12 +69,11 @@ export async function createRFP(input: CreateRFPInput) {
           {
             "budget": "500k - 800k USD",
             "category": "Software Development",
-            "companyName": "Acme Corp",
+            "company": "Acme Corp",
             "contactEmail": "info@acme.com",
             "deadline": "2024-01-01"
             "description": "We are looking for a vendor to build a website for us.",
             "location": "New York, NY",
-            "subCategory": "Web Development",
             "tags": ["web", "development", "design"],
             "title": "Website Development",
           }
@@ -111,7 +114,7 @@ export async function createRFP(input: CreateRFPInput) {
     .values({
       userId: user.id,
       title: parsedData.title as string,
-      data: { ...parsedData, fileUrl: input.fileUrl },
+      data: { ...parsedData, fileUrl: input.fileUrl } as RFPData,
     })
     .returning({ id: rfps.id });
   return rfp;

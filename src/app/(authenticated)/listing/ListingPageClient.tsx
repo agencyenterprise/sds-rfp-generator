@@ -1,8 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { RFP, Pagination } from "~/types/types";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -10,7 +7,11 @@ import {
   PlusIcon,
   ViewColumnsIcon,
 } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
 import SearchBar from "~/components/ui/searchbar";
+import { type Pagination, type RFP } from "~/types/types";
 
 interface ListingPageClientProps {
   rfps: RFP[];
@@ -30,10 +31,10 @@ const RFPcard = ({ rfp }: RFPItemProps) => (
       <article className="flex w-full flex-col">
         <header className="flex w-full flex-col">
           <span className="gap-2.5 self-start rounded-[80px] bg-gray-900 px-3 py-1 text-xs text-sky-400">
-            {(rfp.data?.category as string) ?? "General"}
+            {rfp.data?.category ?? "General"}
           </span>
           <h2 className="mt-4 text-lg font-medium leading-tight text-neutral-50">
-            {(rfp.data?.company as string) ?? "Company Name"}
+            {rfp.data?.company ?? "Company Name"}
           </h2>
         </header>
         <section className="mt-4 flex w-full flex-col text-sm">
@@ -41,15 +42,15 @@ const RFPcard = ({ rfp }: RFPItemProps) => (
             {rfp.title}
           </h3>
           <p className="mt-1 text-ellipsis leading-5 text-slate-400">
-            {(rfp.data?.description as string) ?? "Description"}
+            {rfp.data?.description ?? "Description"}
           </p>
         </section>
       </article>
     </a>
     <footer className="mt-16 flex flex-col self-start">
-      {(rfp.data?.tags as string[]) && (
+      {rfp.data?.tags && (
         <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
-          {(rfp.data?.tags as string[]).map((tag: string, index: number) => (
+          {(rfp.data?.tags).map((tag: string, index: number) => (
             <span key={index}>#{tag}</span>
           ))}
         </div>
@@ -61,16 +62,15 @@ const RFPcard = ({ rfp }: RFPItemProps) => (
           </span>
           <time className="my-auto self-stretch text-red-400">
             {rfp.data?.deadline
-              ? new Date(rfp.data?.deadline as Date).toLocaleDateString(
-                  "en-US",
-                  { year: "numeric", month: "short", day: "numeric" },
-                )
+              ? new Date(rfp.data?.deadline).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })
               : "N/A"}
           </time>
         </div>
-        <div className="mt-3 text-orange-300">
-          {(rfp.data?.budget as string) || "N/A"}
-        </div>
+        <div className="mt-3 text-orange-300">{rfp.data?.budget ?? "N/A"}</div>
       </div>
     </footer>
   </li>
@@ -83,37 +83,34 @@ const RFProw = ({ rfp }: RFPItemProps) => (
         <div className="flex flex-col">
           <div className="flex items-center justify-between">
             <span className="rounded-[80px] bg-gray-800 px-3 py-1 text-xs text-sky-400">
-              {(rfp.data?.category as string) ?? "General"}
+              {rfp.data?.category ?? "General"}
             </span>
             <time className="text-red-400">
               {rfp.data?.deadline
-                ? new Date(rfp.data?.deadline as Date).toLocaleDateString(
-                    "en-US",
-                    {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    },
-                  )
+                ? new Date(rfp.data?.deadline).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })
                 : "N/A"}
             </time>
           </div>
           <h2 className="mt-2 text-lg font-medium leading-tight text-neutral-50">
-            {(rfp.data?.company as string) ?? "Company Name"}
+            {rfp.data?.company ?? "Company Name"}
           </h2>
           <h3 className="mt-1 text-sm font-medium leading-tight text-neutral-50">
             {rfp.title}
           </h3>
           <p className="mt-1 text-sm leading-5 text-slate-400">
-            {(rfp.data?.description as string) ?? "Description"}
+            {rfp.data?.description ?? "Description"}
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-400">
-            {(rfp.data?.tags as string[])?.map((tag: string, index: number) => (
+            {rfp.data?.tags?.map((tag: string, index: number) => (
               <span key={index}>#{tag}</span>
             ))}
           </div>
           <div className="mt-2 text-orange-300">
-            {(rfp.data?.budget as string) || "N/A"}
+            {rfp.data?.budget ?? "N/A"}
           </div>
         </div>
       </div>
@@ -144,7 +141,7 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
 
     const url = `${window.location.pathname}?${query}`;
     router.replace(url);
-  }, [searchQuery, sortOption, currentPage]);
+  }, [searchQuery, sortOption, currentPage, router]);
 
   const filteredRfps = rfps
     .filter((rfp) =>
@@ -195,7 +192,7 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
           <select
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
-            className="self-stretch rounded-lg border border-solid border-slate-700 bg-slate-800 py-1.5 py-3 pl-3 pr-1.5"
+            className="self-stretch rounded-lg border border-solid border-slate-700 bg-slate-800 py-1.5 pl-3 pr-1.5"
           >
             <option value="date">Sort by Date</option>
             <option value="name">Sort by Name</option>
@@ -205,17 +202,17 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
               onClick={() => setDisplayMode("card")}
               className={`rounded-lg border p-2 ${displayMode === "card" ? "bg-gray-600" : ""}`}
             >
-              <ViewColumnsIcon className="h-5 w-5" />
+              <ViewColumnsIcon className="size-5" />
             </button>
             <button
               onClick={() => setDisplayMode("row")}
               className={`rounded-lg border p-2 ${displayMode === "row" ? "bg-gray-600" : ""}`}
             >
-              <ListBulletIcon className="h-5 w-5" />
+              <ListBulletIcon className="size-5" />
             </button>
             <a
               href="/generate"
-              className="inline-flex h-[42px] items-center justify-center gap-2 rounded-lg border border-[#164bd2] bg-gradient-to-b from-[#2b7afb] via-[#2174fd] to-[#213afd] px-4 py-3 shadow shadow-inner"
+              className="inline-flex h-[42px] items-center justify-center gap-2 rounded-lg border border-[#164bd2] bg-gradient-to-b from-[#2b7afb] via-[#2174fd] to-[#213afd] px-4 py-3 shadow-inner"
             >
               <PlusIcon className="size-4" />
               <div className="text-center text-sm font-medium leading-[18.20px] text-white">
@@ -248,7 +245,7 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
             <button
               key={page}
               onClick={() => setCurrentPage(page)}
-              className={`my-auto h-10 min-h-[40px] w-10 self-stretch whitespace-nowrap rounded-md text-sm font-medium leading-5 ${
+              className={`my-auto size-10 min-h-[40px] self-stretch whitespace-nowrap rounded-md text-sm font-medium leading-5 ${
                 currentPage === page
                   ? "bg-slate-800 text-neutral-50"
                   : "bg-white bg-opacity-0 text-slate-400"

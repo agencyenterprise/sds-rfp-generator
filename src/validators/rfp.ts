@@ -19,21 +19,24 @@ export const GenerateRFPInput = z.object({
 
 export type GenerateRFPInput = z.infer<typeof GenerateRFPInput>;
 
+export const RFPData = z.object({
+  description: z.string().min(1, "Description is required"),
+  budget: z.string().min(1, "Budget is required"),
+  category: z.string().min(1, "Category is required"),
+  company: z.string().min(1, "Company name is required"),
+  deadline: z.date().optional(),
+  tags: z.array(z.string()).optional(),
+  fileUrl: z.string().optional(),
+  contactEmail: z.string().email("Invalid email address"),
+  location: z.string().optional(),
+});
+
+export type RFPData = z.infer<typeof RFPData>;
+
 export const UpdateRFPInput = z.object({
   id: z.string(),
-  data: z.object({
-    title: z.string().min(1, "Title is required"),
-    description: z.string().min(1, "Description is required"),
-    budget: z.string().min(1, "Budget is required"),
-    category: z.string().min(1, "Category is required"),
-    subCategory: z.string().min(1, "Sub-category is required"),
-    companyName: z.string().min(1, "Company name is required"),
-    contactEmail: z.string().email("Invalid email address"),
-    deadline: z.string().min(1, "Deadline is required"),
-    location: z.string().min(1, "Location is required"),
-    tags: z.array(z.string()).min(1, "At least one tag is required"),
-    fileUrl: z.string().min(1, "File URL is required"),
-  }),
+  title: z.string().min(1, "Title is required"),
+  data: RFPData,
 });
 
 export type UpdateRFPInput = z.infer<typeof UpdateRFPInput>;

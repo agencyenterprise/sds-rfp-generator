@@ -22,13 +22,13 @@ import {
   type UpdateRFPInput,
 } from "~/validators/rfp";
 
-export function EditForm({ id, data }: UpdateRFPInput) {
+export function EditForm({ id, title, data }: UpdateRFPInput) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const editMutation = api.rfp.update.useMutation();
 
   const form = useForm<UpdateRFPInput>({
     resolver: zodResolver(FormSchema),
-    defaultValues: { id, data },
+    defaultValues: { id, title, data },
   });
 
   const handleSubmit = async (values: UpdateRFPInput) => {
@@ -47,7 +47,7 @@ export function EditForm({ id, data }: UpdateRFPInput) {
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="data.title"
+          name="title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Title</FormLabel>
@@ -99,20 +99,7 @@ export function EditForm({ id, data }: UpdateRFPInput) {
         />
         <FormField
           control={form.control}
-          name="data.subCategory"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Sub-category</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="data.companyName"
+          name="data.company"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Company Name</FormLabel>
@@ -143,7 +130,14 @@ export function EditForm({ id, data }: UpdateRFPInput) {
             <FormItem>
               <FormLabel>Deadline</FormLabel>
               <FormControl>
-                <Input {...field} type="date" />
+                <Input
+                  {...field}
+                  type="date"
+                  value={
+                    field.value ? field.value.toISOString().split("T")[0] : ""
+                  }
+                  onChange={(e) => field.onChange(new Date(e.target.value))}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

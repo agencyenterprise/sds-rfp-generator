@@ -1,16 +1,17 @@
 import { api } from "~/trpc/server";
-import { RFPResponse } from "~/types/types";
+import { type RFPResponse } from "~/types/types";
+
 import ListingPageClient from "./ListingPageClient";
 
 interface ListingPageProps {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
 export default async function ListingPage({ searchParams }: ListingPageProps) {
   const params = new URLSearchParams(searchParams as Record<string, string>);
-  const searchQuery = params.get("searchQuery") || "";
-  const sortOption = params.get("sortOption") || "date";
-  const page = params.get("page") || "1";
+  const searchQuery = params.get("searchQuery") ?? "";
+  const sortOption = params.get("sortOption") ?? "date";
+  const page = params.get("page") ?? "1";
 
   const input = {
     searchQuery,
