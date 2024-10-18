@@ -1,5 +1,6 @@
 import { db } from "./index";
 import { rfps, users } from "./schema";
+import mockRFPs from "~/data/mockRFPs";
 
 export async function seed() {
   const [user] = await db
@@ -10,19 +11,20 @@ export async function seed() {
       lastName: "User",
     })
     .returning();
-  await db.insert(rfps).values({
-    userId: user!.id,
-    title: "Test RFP",
-    data: {},
-  });
+
+  // Clear existing data
+  await db.delete(rfps);
+
+  // Insert mock data
+  await db.insert(rfps).values(mockRFPs);
 }
 
 void seed()
   .then(() => {
-    console.log("Seeded!");
+    console.log("Database seeded successfully!");
   })
   .catch((error) => {
-    console.error(error);
+    console.error("Error seeding database:", error);
   })
   .finally(() => {
     process.exit(0);
