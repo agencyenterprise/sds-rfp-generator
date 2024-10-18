@@ -22,6 +22,15 @@ import {
   type UpdateRFPInput,
 } from "~/validators/rfp";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import categories from "./categories.json";
+
 export function EditForm({ id, title, data }: UpdateRFPInput) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const editMutation = api.rfp.update.useMutation();
@@ -78,7 +87,21 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
               <FormItem>
                 <FormLabel>Category</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
