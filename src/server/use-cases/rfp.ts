@@ -12,15 +12,17 @@ import { db } from "../db";
 import { openai } from "../gateways/openai";
 import { getCurrentUser } from "./user";
 
-export async function listPublishedRFPs(
+export async function listRFPs(
+  showMine = false,
   searchTerm?: string,
   page = 1,
   pageSize = 25,
 ) {
+  const user = await getCurrentUser();
   const searchTermLower = searchTerm?.toLowerCase();
   const offset = (page - 1) * pageSize;
   const whereClause = and(
-    isNotNull(rfps.publishedAt),
+    showMine ? eq(rfps.userId, user.id) : isNotNull(rfps.publishedAt),
     searchTermLower
       ? or(
           sql`LOWER(title) LIKE ${`%${searchTermLower}%`}`,

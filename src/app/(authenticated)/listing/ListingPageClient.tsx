@@ -7,7 +7,7 @@ import {
   PlusIcon,
   ViewColumnsIcon,
 } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SearchBar from "~/components/ui/searchbar";
@@ -126,6 +126,7 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
   initialPage,
 }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
   const [sortOption, setSortOption] = useState(initialSortOption);
   const [displayMode, setDisplayMode] = useState("card");
@@ -134,14 +135,14 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
 
   useEffect(() => {
     const query = new URLSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
       searchQuery,
       sortOption,
       page: currentPage.toString(),
     }).toString();
-
     const url = `${window.location.pathname}?${query}`;
     router.replace(url);
-  }, [searchQuery, sortOption, currentPage, router]);
+  }, [searchQuery, sortOption, currentPage, router, searchParams]);
 
   const filteredRfps = rfps
     .filter((rfp) =>
@@ -176,11 +177,17 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
     }
   };
 
+  const isMySubmissionsPage = searchParams.has("showMine");
+
   return (
     <div>
-      <h2 className="mb-2 text-5xl font-medium leading-[65px]">Explore RFPs</h2>
+      <h2 className="mb-2 text-5xl font-medium leading-[65px]">
+        {isMySubmissionsPage ? "My Submissions" : "Explore RFPs"}
+      </h2>
       <p className="mb-4 text-xl text-slate-400">
-        Discover opportunities, find the perfect match
+        {isMySubmissionsPage
+          ? "View your RFPs submissions."
+          : "Discover opportunities, find the perfect match"}
       </p>
       <div className="mb-8 flex items-center justify-between gap-4 border border-transparent border-b-[#393F58] pb-8">
         <SearchBar

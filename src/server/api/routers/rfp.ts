@@ -4,7 +4,7 @@ import {
   createRFP,
   deleteRFP,
   getRFPById,
-  listPublishedRFPs,
+  listRFPs,
   publishRFP,
   unpublishRFP,
   updateRFP,
@@ -33,7 +33,7 @@ export const rfpRouter = createTRPCRouter({
   list: publicProcedure
     .input(ListRFPsInput)
     .query(async ({ input }) =>
-      listPublishedRFPs(input.searchTerm, input.page, input.pageSize),
+      listRFPs(input.showMine, input.searchTerm, input.page, input.pageSize),
     ),
   publish: publicProcedure
     .input(RFPIdInput)

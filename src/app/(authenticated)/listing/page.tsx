@@ -12,11 +12,13 @@ export default async function ListingPage({ searchParams }: ListingPageProps) {
   const searchQuery = params.get("searchQuery") ?? "";
   const sortOption = params.get("sortOption") ?? "date";
   const page = params.get("page") ?? "1";
+  const showMine = params.get("showMine") === "true";
 
   const input = {
     searchQuery,
     sortOption,
     page: parseInt(page, 10),
+    showMine,
   };
 
   const response: RFPResponse = (await api.rfp.list(input)) as RFPResponse;
