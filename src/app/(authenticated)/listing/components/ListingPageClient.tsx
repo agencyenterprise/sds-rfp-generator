@@ -1,50 +1,44 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { RFP, Pagination } from "~/types/types";
 
 interface ListingPageClientProps {
   rfps: RFP[];
   pagination: Pagination;
+  initialSearchQuery: string;
+  initialSortOption: string;
+  initialPage: string;
 }
 
 const ListingPageClient: React.FC<ListingPageClientProps> = ({
   rfps,
   pagination,
+  initialSearchQuery,
+  initialSortOption,
+  initialPage,
 }) => {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState(
-    router.query.searchQuery || "",
-  );
-  const [sortOption, setSortOption] = useState(
-    router.query.sortOption || "date",
-  );
+  const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
+  const [sortOption, setSortOption] = useState(initialSortOption);
   const [displayMode, setDisplayMode] = useState("row");
-  const [currentPage, setCurrentPage] = useState(
-    Number(router.query.page) || pagination.currentPage,
-  );
+  const [currentPage, setCurrentPage] = useState(Number(initialPage));
   const itemsPerPage = pagination.pageSize;
 
   useEffect(() => {
-    const query = {
+    const query = new URLSearchParams({
       searchQuery,
       sortOption,
       page: currentPage.toString(),
-    };
-    router.push(
-      {
-        pathname: router.pathname,
-        query,
-      },
-      undefined,
-      { shallow: true },
-    );
+    }).toString();
+
+    const url = `${window.location.pathname}?${query}`;
+    router.replace(url);
   }, [searchQuery, sortOption, currentPage]);
 
   const filteredRfps = rfps
-    // TODO: Revise if applicable
-    // .filter((rfp) =>
-    //   rfp.id.toLowerCase().includes(searchQuery.toLowerCase())
-    // )
+    .filter((rfp) => rfp.id.toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => {
       if (sortOption === "date") {
         return (
@@ -113,9 +107,7 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
           >
             <a href={`/view/${rfp.id}`}>
               <h3 className="text-lg font-semibold">{rfp.title}</h3>
-              <p className="text-sm text-gray-600">
-                {rfp.data?.description as String}
-              </p>
+              <p className="text-sm text-gray-600">{rfp.data?.description}</p>
               <p className="text-sm text-gray-600">Created by: {rfp.userId}</p>
               <p className="text-sm text-gray-600">
                 Created at: {rfp.createdAt.toISOString()}
