@@ -19,19 +19,38 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               height={40}
             />
           </Link>
-          <div className="flex flex-col items-end">
-            <SignedIn>
-              <UserButton
-                appearance={{
-                  elements: {
-                    avatarBox: "size-8",
-                  },
-                }}
-              />
-            </SignedIn>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
+          <div className="flex items-center gap-8">
+            <nav>
+              <ul className="flex items-center">
+                <li>
+                  <Link href="/listing" className="px-4 py-2">
+                    Marketplace
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/listing?showMine=true"
+                    className="rounded-md px-4 py-2"
+                  >
+                    My Submissions
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+            <div>
+              <SignedIn>
+                <UserButton
+                  appearance={{
+                    elements: {
+                      avatarBox: "size-8",
+                    },
+                  }}
+                />
+              </SignedIn>
+              <SignedOut>
+                <SignInButton />
+              </SignedOut>
+            </div>
           </div>
         </div>
       </header>
