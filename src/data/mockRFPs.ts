@@ -21,6 +21,8 @@ const mockRFPs: RFP[] = [
       company: "Finn Church Aid",
       contactEmail: "test@test.com",
       location: "Kyiv, Ukraine",
+      fileUrl:
+        "https://utfs.io/f/6ey8bQmCyH3sGI77sdiRenc6q7bPlo4QrSvGZdgwFTHAVt2M",
     },
     userId: null,
     createdAt: new Date("2024-11-11"),
@@ -46,6 +48,8 @@ const mockRFPs: RFP[] = [
       company: "Water.org",
       contactEmail: "test@test.com",
       location: "Bishkek, Kyrgyzstan",
+      fileUrl:
+        "https://utfs.io/f/6ey8bQmCyH3sGI77sdiRenc6q7bPlo4QrSvGZdgwFTHAVt2M",
     },
     userId: null,
     createdAt: new Date("2024-12-02"),
@@ -72,6 +76,8 @@ const mockRFPs: RFP[] = [
       company: "United Nations Office of Counter-Terrorism",
       contactEmail: "test@test.com",
       location: "Addis Ababa, Ethiopia",
+      fileUrl:
+        "https://utfs.io/f/6ey8bQmCyH3sGI77sdiRenc6q7bPlo4QrSvGZdgwFTHAVt2M",
     },
     userId: null,
     createdAt: new Date("2024-12-10"),
@@ -97,6 +103,8 @@ const mockRFPs: RFP[] = [
       company: "ABAAD",
       contactEmail: "test@test.com",
       location: "Beirut, Lebanon",
+      fileUrl:
+        "https://utfs.io/f/6ey8bQmCyH3sGI77sdiRenc6q7bPlo4QrSvGZdgwFTHAVt2M",
     },
     userId: null,
     createdAt: new Date("2024-12-02"),
@@ -122,6 +130,8 @@ const mockRFPs: RFP[] = [
       company: "American Bar Association",
       contactEmail: "test@test.com",
       location: "Lusaka, Zambia",
+      fileUrl:
+        "https://utfs.io/f/6ey8bQmCyH3sGI77sdiRenc6q7bPlo4QrSvGZdgwFTHAVt2M",
     },
     userId: null,
     createdAt: new Date("2024-11-01"),
@@ -148,6 +158,8 @@ const mockRFPs: RFP[] = [
       company: "Danish Refugee Council",
       contactEmail: "test@test.com",
       location: "Sana'a, Yemen",
+      fileUrl:
+        "https://utfs.io/f/6ey8bQmCyH3sGI77sdiRenc6q7bPlo4QrSvGZdgwFTHAVt2M",
     },
     userId: null,
     createdAt: new Date("2024-11-01"),
@@ -174,6 +186,8 @@ const mockRFPs: RFP[] = [
       company: "BRAC",
       contactEmail: "test@test.com",
       location: "Manila, Philippines",
+      fileUrl:
+        "https://utfs.io/f/6ey8bQmCyH3sGI77sdiRenc6q7bPlo4QrSvGZdgwFTHAVt2M",
     },
     userId: null,
     createdAt: new Date("2024-11-01"),
@@ -194,6 +208,8 @@ const mockRFPs: RFP[] = [
       company: "Peace Winds Japan",
       contactEmail: "test@test.com",
       location: "Kakuma, Kenya",
+      fileUrl:
+        "https://utfs.io/f/6ey8bQmCyH3sGI77sdiRenc6q7bPlo4QrSvGZdgwFTHAVt2M",
     },
     userId: null,
     createdAt: new Date("2024-11-01"),
