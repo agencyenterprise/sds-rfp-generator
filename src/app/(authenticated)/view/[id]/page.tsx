@@ -18,7 +18,7 @@ export default async function ViewRFPPage({
         className="mb-8 inline-flex h-[42px] items-center justify-center gap-2 rounded-lg border border-[#35394d] bg-[#23283d] px-4 py-3"
       >
         <div className="flex h-[15px] w-[15px] items-center justify-center">
-          <ArrowLeftIcon className="size-4" />
+          <ArrowLeftIcon className="size-4 text-[#2388ff]" />
         </div>
         <div className="text-center text-sm font-medium leading-[18.20px] text-neutral-50">
           Back to RFP List
@@ -29,15 +29,34 @@ export default async function ViewRFPPage({
           <div className="flex flex-col justify-between overflow-hidden rounded-lg border border-[#393f58] bg-[#23283d] px-4 py-6 shadow-[4px_2px_4px_rgba(25,33,61,0.08)]">
             <article className="flex w-full flex-col">
               <header className="flex w-full flex-col">
-                <span className="gap-2.5 self-start rounded-[80px] bg-gray-900 px-3 py-1 text-xs text-sky-400">
-                  {rfp.data?.category ?? "General"}
-                </span>
-                <h2 className="mt-4 text-lg font-medium leading-tight text-neutral-50">
+                <div className="flex items-start justify-between">
+                  <span className="gap-2.5 self-start rounded-[80px] bg-gray-900 px-3 py-1 text-xs text-sky-400">
+                    {rfp.data?.category ?? "General"}
+                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="my-auto self-stretch text-neutral-50">
+                      Deadline:
+                    </span>
+                    <time className="my-auto self-stretch text-red-400">
+                      {rfp.data?.deadline
+                        ? new Date(rfp.data?.deadline).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            },
+                          )
+                        : "N/A"}
+                    </time>
+                  </div>
+                </div>
+                <h2 className="mt-4 text-3xl font-medium leading-tight text-neutral-50">
                   {rfp.data?.company ?? "Company Name"}
                 </h2>
               </header>
               <section className="mt-4 flex w-full flex-col text-sm">
-                <h3 className="font-medium leading-tight text-neutral-50">
+                <h3 className="text-2xl font-medium leading-tight text-neutral-50">
                   {rfp.title}
                 </h3>
                 <p className="mt-1 text-ellipsis leading-5 text-slate-400">
@@ -54,24 +73,7 @@ export default async function ViewRFPPage({
                 </div>
               )}
               <div className="mt-2 flex max-w-full flex-col text-sm font-medium leading-tight">
-                <div className="flex w-full items-center gap-3">
-                  <span className="my-auto self-stretch text-neutral-50">
-                    Deadline:
-                  </span>
-                  <time className="my-auto self-stretch text-red-400">
-                    {rfp.data?.deadline
-                      ? new Date(rfp.data?.deadline).toLocaleDateString(
-                          "en-US",
-                          {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          },
-                        )
-                      : "N/A"}
-                  </time>
-                </div>
-                <div className="mt-3 text-orange-300">
+                <div className="mt-3 text-2xl text-orange-300">
                   {rfp.data?.budget ?? "N/A"}
                 </div>
               </div>
@@ -105,22 +107,22 @@ export default async function ViewRFPPage({
           )}
         </div>
         <div className="flex flex-col gap-8">
-          <div className="inline-flex h-[180px] flex-col items-start justify-start gap-6 rounded-lg border border-[#393f58] bg-[#23283d] p-6 shadow">
-            <div className="self-stretch text-2xl font-medium leading-loose text-white">
+          <div className="inline-flex flex-col items-start justify-start gap-6 rounded-lg border border-[#393f58] bg-[#23283d] p-6 shadow">
+            <div className="self-stretch text-2xl font-medium text-white">
               Contact Information
             </div>
-            <div className="flex h-[76px] flex-col items-start justify-start gap-3 self-stretch">
-              <div className="inline-flex items-center justify-start gap-1.5">
-                <div className="relative h-6 w-6">
-                  <MapPinIcon className="size-5" />
+            <div className="flex flex-col items-start justify-start gap-3 self-stretch">
+              <div className="inline-flex justify-start gap-1.5">
+                <div className="relative mt-1 h-6 w-6">
+                  <MapPinIcon className="size-5 text-[#2388ff]" />
                 </div>
-                <div className="text-lg font-medium leading-loose text-white">
+                <div className="text-lg font-medium text-white">
                   {rfp.data?.location ?? "Location"}
                 </div>
               </div>
               <div className="inline-flex items-center justify-start gap-1.5 self-stretch">
                 <div className="relative h-6 w-6">
-                  <EnvelopeIcon className="size-5" />
+                  <EnvelopeIcon className="size-5 text-[#2388ff]" />
                 </div>
                 <div className="text-lg font-medium leading-loose text-white">
                   <a href={`mailto:${rfp.data?.contactEmail}`}>
@@ -130,8 +132,8 @@ export default async function ViewRFPPage({
               </div>
             </div>
           </div>
-          <div className="inline-flex h-[94px] flex-col items-start justify-start gap-2.5 rounded-lg border border-[#393f58] p-6">
-            <div className="flex h-[46px] flex-col items-start justify-start gap-1 self-stretch">
+          <div className="inline-flex flex-col items-start justify-start gap-2.5 rounded-lg border border-[#393f58] p-6">
+            <div className="flex flex-col items-start justify-start gap-1 self-stretch">
               <div className="self-stretch text-base font-semibold leading-tight text-slate-400">
                 Want to generate a RFP File?
               </div>
