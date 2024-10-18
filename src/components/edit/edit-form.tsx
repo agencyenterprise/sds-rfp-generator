@@ -44,7 +44,7 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="title"
@@ -71,32 +71,34 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="data.budget"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Budget</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="e.g. 500k - 800k USD" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="data.category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Category</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="data.category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="data.budget"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Budget</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="e.g. 500k - 800k USD" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="data.company"
@@ -175,9 +177,11 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Saving..." : "Save"}
-        </Button>
+        <div className="flex justify-end">
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "Save"}
+          </Button>
+        </div>
       </form>
     </Form>
   );

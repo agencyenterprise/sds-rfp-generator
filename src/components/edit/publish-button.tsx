@@ -1,5 +1,6 @@
 "use client";
 
+import { CloudArrowUpIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 
 import { Button } from "~/components/ui/button";
@@ -30,6 +31,7 @@ export function PublishButton({
         publishedAt ? unpublish.mutate({ id }) : publish.mutate({ id })
       }
     >
+      <CloudArrowUpIcon className="mr-2 size-4" />
       {publishedAt ? "Unpublish" : "Publish"}
     </Button>
   );
