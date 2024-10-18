@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import categories from "./categories.json";
+import { DeleteButton } from "./delete-button";
 
 export function EditForm({ id, title, data }: UpdateRFPInput) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -239,8 +240,9 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
             </FormItem>
           )}
         />
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isSubmitting}>
+        <div className="flex w-full justify-between">
+          <DeleteButton id={id} />
+          <Button type="submit" disabled={isSubmitting} className="ml-auto">
             {isSubmitting ? "Saving..." : "Save"}
           </Button>
         </div>

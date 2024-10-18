@@ -1,4 +1,4 @@
-import { and, eq, isNotNull, or, sql } from "drizzle-orm";
+import { and, eq, isNotNull, isNull, or, sql } from "drizzle-orm";
 import { toFile } from "openai";
 
 import { rfps } from "~/server/db/schema";
@@ -155,4 +155,13 @@ export async function unpublishRFP(id: string) {
     .set({ publishedAt: null })
     .where(and(eq(rfps.id, id), eq(rfps.userId, user.id)))
     .returning();
+}
+
+export async function deleteRFP(id: string) {
+  const user = await getCurrentUser();
+  await db
+    .delete(rfps)
+    .where(
+      and(eq(rfps.id, id), eq(rfps.userId, user.id), isNull(rfps.publishedAt)),
+    );
 }
