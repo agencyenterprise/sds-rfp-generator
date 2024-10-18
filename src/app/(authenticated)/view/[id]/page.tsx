@@ -136,9 +136,12 @@ export default async function ViewRFPPage({
                 Want to generate a RFP File?
               </div>
               <div>
-                <span className="text-sm font-bold leading-[21px] text-[#2388ff]">
+                <a
+                  href="/generate"
+                  className="text-sm font-bold leading-[21px] text-[#2388ff]"
+                >
                   Click here
-                </span>
+                </a>
                 <span className="text-sm font-normal leading-[21px] text-slate-400">
                   {" "}
                   to upload or create a new file.
