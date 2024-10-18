@@ -19,32 +19,32 @@ interface RFPItemProps {
 }
 
 const RFPcard = ({ rfp }: RFPItemProps) => (
-  <article className="flex flex-col justify-between overflow-hidden rounded-lg border border-solid border-slate-700 bg-slate-800 px-4 py-6 shadow-[4px_2px_4px_rgba(25,33,61,0.08)]">
-    <div className="flex w-full flex-col">
-      <header className="flex w-full flex-col">
-        <span className="gap-2.5 self-start rounded-[80px] bg-gray-900 px-3 py-1 text-xs text-sky-400">
-          {(rfp.data?.category as string) ?? "General"}
-        </span>
-        <h2 className="mt-4 text-lg font-medium leading-tight text-neutral-50">
-          {(rfp.data?.company as string) ?? "Company Name"}
-        </h2>
-      </header>
-      <section className="mt-4 flex w-full flex-col text-sm">
-        <h3 className="font-medium leading-tight text-neutral-50">
-          {rfp.title}
-        </h3>
-        <p className="mt-1 text-ellipsis leading-5 text-slate-400">
-          {(rfp.data?.description as string) ?? "Description"}
-        </p>
-      </section>
-    </div>
+  <li className="flex flex-col justify-between overflow-hidden rounded-lg border border-solid border-slate-700 bg-slate-800 px-4 py-6 shadow-[4px_2px_4px_rgba(25,33,61,0.08)]">
+    <a href={`/view/${rfp.id}`}>
+      <article className="flex w-full flex-col">
+        <header className="flex w-full flex-col">
+          <span className="gap-2.5 self-start rounded-[80px] bg-gray-900 px-3 py-1 text-xs text-sky-400">
+            {(rfp.data?.category as string) ?? "General"}
+          </span>
+          <h2 className="mt-4 text-lg font-medium leading-tight text-neutral-50">
+            {(rfp.data?.company as string) ?? "Company Name"}
+          </h2>
+        </header>
+        <section className="mt-4 flex w-full flex-col text-sm">
+          <h3 className="font-medium leading-tight text-neutral-50">
+            {rfp.title}
+          </h3>
+          <p className="mt-1 text-ellipsis leading-5 text-slate-400">
+            {(rfp.data?.description as string) ?? "Description"}
+          </p>
+        </section>
+      </article>
+    </a>
     <footer className="mt-16 flex flex-col self-start">
       {(rfp.data?.tags as string[]) && (
-        <div className="flex items-center gap-2 text-xs text-slate-400">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
           {(rfp.data?.tags as string[]).map((tag: string, index: number) => (
-            <span key={index} className="my-auto self-stretch">
-              #{tag}
-            </span>
+            <span key={index}>#{tag}</span>
           ))}
         </div>
       )}
@@ -67,24 +67,50 @@ const RFPcard = ({ rfp }: RFPItemProps) => (
         </div>
       </div>
     </footer>
-  </article>
+  </li>
 );
 
 const RFProw = ({ rfp }: RFPItemProps) => (
   <li key={rfp.id} className={"border-b p-2"}>
     <a href={`/view/${rfp.id}`}>
-      <h3 className="text-lg font-semibold">{rfp.title}</h3>
-      <p className="text-sm text-gray-600">{rfp.data?.description as string}</p>
-      <p className="text-sm text-gray-600">Created by: {rfp.userId}</p>
-      <p className="text-sm text-gray-600">
-        Created at: {rfp.createdAt.toISOString()}
-      </p>
-      <p className="text-sm text-gray-600">
-        Published at: {rfp.publishedAt?.toISOString()}
-      </p>
-      <p className="text-sm text-gray-600">
-        Updated at: {rfp.updatedAt?.toISOString()}
-      </p>
+      <div className="flex items-center gap-2">
+        <div className="flex flex-col">
+          <div className="flex items-center justify-between">
+            <span className="rounded-[80px] bg-gray-800 px-3 py-1 text-xs text-sky-400">
+              {(rfp.data?.category as string) ?? "General"}
+            </span>
+            <time className="text-red-400">
+              {rfp.data?.deadline
+                ? new Date(rfp.data?.deadline as Date).toLocaleDateString(
+                    "en-US",
+                    {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    },
+                  )
+                : "N/A"}
+            </time>
+          </div>
+          <h2 className="mt-2 text-lg font-medium leading-tight text-neutral-50">
+            {(rfp.data?.company as string) ?? "Company Name"}
+          </h2>
+          <h3 className="mt-1 text-sm font-medium leading-tight text-neutral-50">
+            {rfp.title}
+          </h3>
+          <p className="mt-1 text-sm leading-5 text-slate-400">
+            {(rfp.data?.description as string) ?? "Description"}
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+            {(rfp.data?.tags as string[])?.map((tag: string, index: number) => (
+              <span key={index}>#{tag}</span>
+            ))}
+          </div>
+          <div className="mt-2 text-orange-300">
+            {(rfp.data?.budget as string) || "N/A"}
+          </div>
+        </div>
+      </div>
     </a>
   </li>
 );
@@ -163,7 +189,7 @@ const ListingPageClient: React.FC<ListingPageClientProps> = ({
           <select
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
-            className="rounded border bg-gray-800 p-2 text-gray-200"
+            className="self-stretch rounded-lg border border-solid border-slate-700 bg-slate-800 py-1.5 py-3 pl-3 pr-1.5"
           >
             <option value="date">Sort by Date</option>
             <option value="name">Sort by Name</option>
