@@ -148,7 +148,7 @@ export default function ListingPage() {
         ))}
         <button
           onClick={handleNextPage}
-          disabled={currentPage === pagination?.totalPages ?? 1}
+          disabled={currentPage === (pagination?.totalPages ?? 1)}
           className="my-auto flex min-h-[40px] items-center justify-center gap-1 self-stretch whitespace-nowrap rounded-md bg-white/0 py-2.5 pl-2.5 pr-4 text-sm font-medium leading-5 text-slate-400"
         >
           <span>Next</span>
