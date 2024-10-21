@@ -1,6 +1,6 @@
 import { type RFP } from "~/types/types";
 
-export function RFProw({ rfp }: { rfp: RFP }) {
+export function RFPRow({ rfp }: { rfp: RFP }) {
   return (
     <li key={rfp.id} className={"border-b p-2"}>
       <a href={`/view/${rfp.id}`}>

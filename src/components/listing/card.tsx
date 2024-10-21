@@ -1,6 +1,6 @@
 import { type RFP } from "~/types/types";
 
-export function RFPcard({ rfp }: { rfp: RFP }) {
+export function RFPCard({ rfp }: { rfp: RFP }) {
   return (
     <li className="flex flex-col justify-between overflow-hidden rounded-lg border border-solid border-slate-700 bg-slate-800 px-4 py-6 shadow-[4px_2px_4px_rgba(25,33,61,0.08)]">
       <a href={`/view/${rfp.id}`}>

@@ -10,8 +10,8 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { RFPcard } from "~/components/listing/card";
-import { RFProw } from "~/components/listing/row";
+import { RFPCard } from "~/components/listing/card";
+import { RFPRow } from "~/components/listing/row";
 import SearchBar from "~/components/ui/searchbar";
 import { api } from "~/trpc/react";
 import { type RFP } from "~/types/types";
@@ -115,9 +115,9 @@ export default function ListingPage() {
       <ul className={displayMode === "card" ? "grid grid-cols-4 gap-4" : ""}>
         {rfps?.map((rfp) =>
           displayMode === "card" ? (
-            <RFPcard key={rfp.id} rfp={rfp as RFP} />
+            <RFPCard key={rfp.id} rfp={rfp as RFP} />
           ) : (
-            <RFProw key={rfp.id} rfp={rfp as RFP} />
+            <RFPRow key={rfp.id} rfp={rfp as RFP} />
           ),
         )}
       </ul>
