@@ -1,0 +1,1 @@
+ALTER TABLE "rfps" ADD COLUMN "deadline" timestamp with time zone;

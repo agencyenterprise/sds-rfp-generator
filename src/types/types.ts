@@ -5,6 +5,7 @@ export interface RFP {
   userId: string | null;
   title: string;
   data: RFPData | null;
+  deadline: Date | null;
   publishedAt: Date | null;
   createdAt: Date;
   updatedAt: Date | null;
