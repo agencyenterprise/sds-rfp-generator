@@ -22,6 +22,13 @@
       "when": 1729013960745,
       "tag": "0002_minor_black_bird",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1729535338005,
+      "tag": "0003_white_night_thrasher",
+      "breakpoints": true
     }
   ]
 }

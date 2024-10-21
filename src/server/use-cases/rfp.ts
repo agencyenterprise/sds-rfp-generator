@@ -26,14 +26,14 @@ export async function listRFPs({
   sort?: string;
 }) {
   const user = await getCurrentUser();
-  const searchLower = search?.toLowerCase();
+  const searchTerm = search?.toLowerCase();
   const offset = (page - 1) * pageSize;
   const whereClause = and(
     showMine ? eq(rfps.userId, user.id) : isNotNull(rfps.publishedAt),
-    searchLower
+    searchTerm
       ? or(
-          sql`LOWER(title) LIKE ${`%${searchLower}%`}`,
-          sql`LOWER(CAST(data AS TEXT)) LIKE ${`%${searchLower}%`}`,
+          sql`LOWER(title) LIKE ${`%${searchTerm}%`}`,
+          sql`LOWER(CAST(data AS TEXT)) LIKE ${`%${searchTerm}%`}`,
         )
       : undefined,
   );
@@ -45,11 +45,7 @@ export async function listRFPs({
     .select()
     .from(rfps)
     .where(whereClause)
-    .orderBy(
-      ...(sort === "date"
-        ? [desc(rfps.createdAt), asc(rfps.title)]
-        : [asc(rfps.title), desc(rfps.createdAt)]),
-    )
+    .orderBy(sort === "date" ? desc(rfps.deadline) : asc(rfps.title))
     .limit(pageSize)
     .offset(offset);
 
@@ -134,6 +130,9 @@ export async function createRFP(input: CreateRFPInput) {
       userId: user.id,
       title: parsedData.title as string,
       data: { ...parsedData, fileUrl: input.fileUrl } as RFPData,
+      deadline: parsedData.deadline
+        ? new Date(parsedData.deadline as string)
+        : null,
     })
     .returning({ id: rfps.id });
   return rfp;

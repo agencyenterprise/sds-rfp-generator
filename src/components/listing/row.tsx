@@ -11,8 +11,8 @@ export function RFPRow({ rfp }: { rfp: RFP }) {
                 {rfp.data?.category ?? "General"}
               </span>
               <time className="text-red-400">
-                {rfp.data?.deadline
-                  ? new Date(rfp.data?.deadline).toLocaleDateString("en-US", {
+                {rfp.deadline
+                  ? new Date(rfp.deadline).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "short",
                       day: "numeric",

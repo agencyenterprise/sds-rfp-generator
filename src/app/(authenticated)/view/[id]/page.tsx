@@ -38,15 +38,12 @@ export default async function ViewRFPPage({
                       Deadline:
                     </span>
                     <time className="my-auto self-stretch text-red-400">
-                      {rfp.data?.deadline
-                        ? new Date(rfp.data?.deadline).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                            },
-                          )
+                      {rfp.deadline
+                        ? new Date(rfp.deadline).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })
                         : "N/A"}
                     </time>
                   </div>
