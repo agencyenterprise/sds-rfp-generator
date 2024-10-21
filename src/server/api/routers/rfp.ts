@@ -32,9 +32,7 @@ export const rfpRouter = createTRPCRouter({
     .mutation(async ({ input }) => updateRFP(input)),
   list: publicProcedure
     .input(ListRFPsInput)
-    .query(async ({ input }) =>
-      listRFPs(input.showMine, input.searchTerm, input.page, input.pageSize),
-    ),
+    .query(async ({ input }) => listRFPs(input)),
   publish: publicProcedure
     .input(RFPIdInput)
     .mutation(async ({ input }) => publishRFP(input.id)),

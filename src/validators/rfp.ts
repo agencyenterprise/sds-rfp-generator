@@ -55,9 +55,10 @@ export type SearchRFPsInput = z.infer<typeof SearchRFPsInput>;
 
 export const ListRFPsInput = z.object({
   showMine: z.boolean().optional(),
-  searchTerm: z.string().optional(),
+  search: z.string().optional(),
   page: z.number().default(1),
   pageSize: z.number().default(10),
+  sort: z.enum(["date", "name"]).default("date"),
 });
 
 export type ListRFPsInput = z.infer<typeof ListRFPsInput>;

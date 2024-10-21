@@ -1,4 +1,4 @@
-import { and, eq, isNotNull, isNull, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, isNotNull, isNull, or, sql } from "drizzle-orm";
 import { toFile } from "openai";
 
 import { rfps } from "~/server/db/schema";
@@ -12,21 +12,28 @@ import { db } from "../db";
 import { openai } from "../gateways/openai";
 import { getCurrentUser } from "./user";
 
-export async function listRFPs(
+export async function listRFPs({
   showMine = false,
-  searchTerm?: string,
+  search,
   page = 1,
   pageSize = 25,
-) {
+  sort = "date",
+}: {
+  showMine?: boolean;
+  search?: string;
+  page?: number;
+  pageSize?: number;
+  sort?: string;
+}) {
   const user = await getCurrentUser();
-  const searchTermLower = searchTerm?.toLowerCase();
+  const searchLower = search?.toLowerCase();
   const offset = (page - 1) * pageSize;
   const whereClause = and(
     showMine ? eq(rfps.userId, user.id) : isNotNull(rfps.publishedAt),
-    searchTermLower
+    searchLower
       ? or(
-          sql`LOWER(title) LIKE ${`%${searchTermLower}%`}`,
-          sql`LOWER(CAST(data AS TEXT)) LIKE ${`%${searchTermLower}%`}`,
+          sql`LOWER(title) LIKE ${`%${searchLower}%`}`,
+          sql`LOWER(CAST(data AS TEXT)) LIKE ${`%${searchLower}%`}`,
         )
       : undefined,
   );
@@ -38,8 +45,14 @@ export async function listRFPs(
     .select()
     .from(rfps)
     .where(whereClause)
+    .orderBy(
+      ...(sort === "date"
+        ? [desc(rfps.createdAt), asc(rfps.title)]
+        : [asc(rfps.title), desc(rfps.createdAt)]),
+    )
     .limit(pageSize)
     .offset(offset);
+
   return {
     data: results,
     pagination: {
