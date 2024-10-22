@@ -1,7 +1,13 @@
 import { ArrowDownTrayIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { EnvelopeIcon, MapPinIcon } from "@heroicons/react/24/solid";
+import {
+  EnvelopeIcon,
+  MapPinIcon,
+  PencilIcon,
+} from "@heroicons/react/24/solid";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/server";
 
 export default async function ViewRFPPage({
@@ -10,20 +16,26 @@ export default async function ViewRFPPage({
   params: { id: string };
 }) {
   const rfp = await api.rfp.get({ id: params.id });
+  const currentUser = await api.user.getCurrent();
   if (!rfp) redirect("/404");
   return (
-    <>
-      <a
-        href="/listing"
-        className="mb-8 inline-flex h-[42px] items-center justify-center gap-2 rounded-lg border border-[#35394d] bg-[#23283d] px-4 py-3"
-      >
-        <div className="flex size-[15px] items-center justify-center">
-          <ArrowLeftIcon className="size-4 text-[#2388ff]" />
-        </div>
-        <div className="text-center text-sm font-medium leading-[18.20px] text-neutral-50">
-          Back to RFP List
-        </div>
-      </a>
+    <div className="space-y-8">
+      <div className="flex w-full justify-between">
+        <Button variant="secondary" asChild>
+          <Link href="/listing">
+            <ArrowLeftIcon className="mr-2 size-4 text-primary" />
+            Back to RFP List
+          </Link>
+        </Button>
+        {rfp.userId === currentUser.id && (
+          <Button asChild>
+            <Link href={`/edit/${rfp.id}`}>
+              <PencilIcon className="mr-2 size-4" />
+              Edit RFP
+            </Link>
+          </Button>
+        )}
+      </div>
       <div className="grid grid-cols-4 gap-8">
         <div className="col-span-3">
           <div className="flex flex-col justify-between overflow-hidden rounded-lg border border-[#393f58] bg-[#23283d] px-4 py-6 shadow-[4px_2px_4px_rgba(25,33,61,0.08)]">
@@ -150,6 +162,6 @@ export default async function ViewRFPPage({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
