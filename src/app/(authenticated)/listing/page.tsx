@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { RFPCard } from "~/components/listing/card";
 import { RFPRow } from "~/components/listing/row";
 import SearchBar from "~/components/ui/searchbar";
+import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import { type RFP } from "~/types/types";
 
@@ -72,7 +73,7 @@ export default function ListingPage() {
           ? "View your RFPs submissions."
           : "Discover opportunities, find the perfect match"}
       </p>
-      <div className="mb-8 flex items-center justify-between gap-4 border border-transparent border-b-[#393F58] pb-8">
+      <div className="mb-8 flex flex-col justify-between gap-4 border border-transparent border-b-[#393F58] pb-8 lg:flex-row lg:items-center">
         <SearchBar
           value={search}
           onChange={setSearch}
@@ -90,13 +91,19 @@ export default function ListingPage() {
           <div className="flex gap-2">
             <button
               onClick={() => setDisplayMode("card")}
-              className={`rounded-lg border p-2 ${displayMode === "card" ? "bg-gray-600" : ""}`}
+              className={cn(
+                "rounded-lg border p-2",
+                displayMode === "card" && "bg-gray-600",
+              )}
             >
               <ViewColumnsIcon className="size-5" />
             </button>
             <button
               onClick={() => setDisplayMode("row")}
-              className={`rounded-lg border p-2 ${displayMode === "row" ? "bg-gray-600" : ""}`}
+              className={cn(
+                "rounded-lg border p-2",
+                displayMode === "row" && "bg-gray-600",
+              )}
             >
               <ListBulletIcon className="size-5" />
             </button>
@@ -112,7 +119,12 @@ export default function ListingPage() {
           </div>
         </div>
       </div>
-      <ul className={displayMode === "card" ? "grid grid-cols-4 gap-4" : ""}>
+      <ul
+        className={cn(
+          "grid gap-4",
+          displayMode === "card" && "grid-cols-1 lg:grid-cols-4",
+        )}
+      >
         {rfps?.map((rfp) =>
           displayMode === "card" ? (
             <RFPCard key={rfp.id} rfp={rfp as RFP} />
