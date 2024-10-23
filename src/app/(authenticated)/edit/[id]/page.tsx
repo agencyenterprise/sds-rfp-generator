@@ -40,6 +40,7 @@ export default async function EditRFPPage({
             <a
               className="flex w-full flex-col gap-2 overflow-hidden"
               href={rfp.data?.fileUrl}
+              target="_blank"
               download
             >
               <div className="flex items-center gap-2">
