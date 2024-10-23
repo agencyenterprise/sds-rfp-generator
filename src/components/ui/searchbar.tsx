@@ -1,5 +1,7 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
+import { Input } from "./input";
+
 interface SearchBarProps {
   value: string;
   placeholder: string;
@@ -11,15 +13,15 @@ const SearchBar = ({
   placeholder = "Search...",
   onChange,
 }: SearchBarProps) => (
-  <div className="my-auto flex min-h-[40px] w-[318px] min-w-[240px] items-center self-stretch rounded-lg border border-solid border-slate-700 bg-slate-800 py-3 pl-3 pr-1.5 text-xs text-slate-500 shadow-sm">
-    <div className="my-auto flex items-center gap-1 self-stretch">
-      <MagnifyingGlassIcon className="size-5" />
-      <input
+  <div className="flex w-full max-w-md items-center rounded-lg border dark:bg-[#141828]">
+    <div className="flex w-full items-center">
+      <MagnifyingGlassIcon className="ml-2.5 size-5 text-slate-400" />
+      <Input
         type="text"
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border-none bg-transparent text-slate-500 outline-none"
+        className="border-none focus-visible:ring-0 focus-visible:ring-offset-0"
       />
     </div>
   </div>

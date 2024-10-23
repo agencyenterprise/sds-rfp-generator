@@ -1,9 +1,11 @@
+import Link from "next/link";
+
 import { type RFP } from "~/types/types";
 
 export function RFPRow({ rfp }: { rfp: RFP }) {
   return (
-    <li key={rfp.id} className={"border-b px-2 py-6"}>
-      <a href={`/view/${rfp.id}`}>
+    <li key={rfp.id} className={"border-b p-2"}>
+      <Link href={`/view/${rfp.id}`}>
         <div className="flex items-center gap-2">
           <div className="flex w-full flex-col">
             <div className="flex items-center justify-between">
@@ -39,7 +41,7 @@ export function RFPRow({ rfp }: { rfp: RFP }) {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </li>
   );
 }

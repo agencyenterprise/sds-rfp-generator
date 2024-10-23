@@ -1,9 +1,11 @@
+import Link from "next/link";
+
 import { type RFP } from "~/types/types";
 
 export function RFPCard({ rfp }: { rfp: RFP }) {
   return (
     <li className="flex flex-col justify-between overflow-hidden rounded-lg border border-solid border-slate-700 bg-slate-800 px-4 py-6 shadow-[4px_2px_4px_rgba(25,33,61,0.08)]">
-      <a href={`/view/${rfp.id}`}>
+      <Link href={`/view/${rfp.id}`}>
         <article className="flex w-full flex-col">
           <header className="flex w-full flex-col">
             <span className="gap-2.5 self-start rounded-[80px] bg-gray-900 px-3 py-1 text-xs text-sky-400">
@@ -22,7 +24,7 @@ export function RFPCard({ rfp }: { rfp: RFP }) {
             </p>
           </section>
         </article>
-      </a>
+      </Link>
       <footer className="mt-16 flex flex-col self-start">
         {rfp.data?.tags && (
           <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">

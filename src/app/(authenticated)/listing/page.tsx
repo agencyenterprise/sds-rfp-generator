@@ -7,12 +7,21 @@ import {
   PlusIcon,
   ViewColumnsIcon,
 } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { RFPCard } from "~/components/listing/card";
 import { RFPRow } from "~/components/listing/row";
+import { Button } from "~/components/ui/button";
 import SearchBar from "~/components/ui/searchbar";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import { type RFP } from "~/types/types";
@@ -80,42 +89,39 @@ export default function ListingPage() {
           placeholder="Search for RFPs..."
         />
         <div className="flex gap-2">
-          <select
+          <Select
             value={sort}
-            onChange={(e) => setSort(e.target.value as SortOption)}
-            className="self-stretch rounded-lg border border-solid border-slate-700 bg-slate-800 py-1.5 pl-3 pr-1.5"
+            onValueChange={(value) => setSort(value as SortOption)}
           >
-            <option value="date">Sort by Date</option>
-            <option value="name">Sort by Name</option>
-          </select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="date">Sort by Date</SelectItem>
+              <SelectItem value="name">Sort by Name</SelectItem>
+            </SelectContent>
+          </Select>
           <div className="flex gap-2">
-            <button
+            <Button
               onClick={() => setDisplayMode("card")}
-              className={cn(
-                "rounded-lg border p-2",
-                displayMode === "card" && "bg-gray-600",
-              )}
+              variant={displayMode === "card" ? "secondary" : "outline"}
+              size="icon"
             >
               <ViewColumnsIcon className="size-5" />
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setDisplayMode("row")}
-              className={cn(
-                "rounded-lg border p-2",
-                displayMode === "row" && "bg-gray-600",
-              )}
+              variant={displayMode === "row" ? "secondary" : "outline"}
+              size="icon"
             >
               <ListBulletIcon className="size-5" />
-            </button>
-            <a
-              href="/create"
-              className="inline-flex h-[42px] items-center justify-center gap-2 rounded-lg border border-[#164bd2] bg-gradient-to-b from-[#2b7afb] via-[#2174fd] to-[#213afd] px-4 py-3 shadow-inner"
-            >
-              <PlusIcon className="size-4" />
-              <div className="text-center text-sm font-medium leading-[18.20px] text-white">
-                <span>Create new RFP</span>
-              </div>
-            </a>
+            </Button>
+            <Button asChild>
+              <Link href="/create">
+                <PlusIcon className="mr-2 size-4" />
+                Create new RFP
+              </Link>
+            </Button>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
+import Link from "next/link";
 
 const Hero = () => (
   <section className="mx-auto flex min-h-[80vsh] flex-col items-center pt-16 text-center">
@@ -21,13 +22,13 @@ const Hero = () => (
         >
           Generate your RFP for free
         </a>
-        <a
+        <Link
           href="/listing"
           className="my-auto mt-8 flex items-center justify-center gap-1.5 self-stretch text-xs font-medium text-white"
         >
           <span>Or explore public RFPs</span>
           <ArrowRightIcon className="size-3" />
-        </a>
+        </Link>
       </div>
       <Image
         className="aspect-[1.24] w-full rounded object-contain max-md:max-w-full"

@@ -22,19 +22,19 @@ export function PublishButton({ id }: { id: string }) {
 
   return (
     <Button
-      variant="secondary"
+      variant="reverse"
       onClick={() =>
         isPublished ? unpublish.mutate({ id }) : publish.mutate({ id })
       }
     >
       {isPublished ? (
         <>
-          <CloudIcon className="mr-2 size-4 text-primary" />
+          <CloudIcon className="mr-2 size-4" />
           Unpublish
         </>
       ) : (
         <>
-          <CloudArrowUpIcon className="mr-2 size-4 text-primary" />
+          <CloudArrowUpIcon className="mr-2 size-4" />
           Publish
         </>
       )}
