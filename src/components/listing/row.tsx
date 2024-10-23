@@ -7,7 +7,7 @@ export function RFPRow({ rfp }: { rfp: RFP }) {
     <li key={rfp.id} className={"border-b p-2"}>
       <Link href={`/view/${rfp.id}`}>
         <div className="flex items-center gap-2">
-          <div className="flex flex-col">
+          <div className="flex w-full flex-col">
             <div className="flex items-center justify-between">
               <span className="rounded-[80px] bg-gray-800 px-3 py-1 text-xs text-sky-400">
                 {rfp.data?.category ?? "General"}

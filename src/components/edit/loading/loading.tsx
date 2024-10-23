@@ -21,5 +21,7 @@ export function Loading({ className }: { className?: string }) {
     }
   }, []);
 
-  return <div ref={containerRef} className={cn("size-20", className)} />;
+  return (
+    <div ref={containerRef} className={cn("size-20 scale-150", className)} />
+  );
 }

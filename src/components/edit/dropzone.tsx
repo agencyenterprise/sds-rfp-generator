@@ -43,8 +43,12 @@ export function Dropzone({
 
   if (isUploading) {
     return (
-      <div className="flex h-[140px] flex-col items-center justify-center rounded-md border border-dashed border-[#393f58] bg-[#23283d] px-6 py-2">
+      <div className="flex h-[140px] flex-col items-center justify-center gap-2 rounded-md border border-dashed border-[#393f58] bg-[#23283d] px-6 py-2">
         <Loading />
+        <p className="text-sm text-slate-400">
+          Uploading and processing your file, please wait, it might take a
+          while...
+        </p>
       </div>
     );
   }
