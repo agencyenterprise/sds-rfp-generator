@@ -1,67 +1,58 @@
+'use client';
+
 import {
   ArrowRightIcon,
   DocumentTextIcon,
-  HeartIcon,
 } from "@heroicons/react/20/solid";
 
-interface RFPData {
-  title: string;
-  description: string;
-  views: number;
-}
+import { api } from "~/trpc/react";
+import { type RFP } from "~/types/types";
 
-const rfpData: RFPData[] = [
-  {
-    title: "Custom AI-Driven CRM Development",
-    description:
-      "Seeking a vendor to build a custom AI-powered CRM that automates customer...",
-    views: 7400,
-  },
-  {
-    title: "Blockchain-Powered Payment Platform",
-    description:
-      "Looking for developers to create a secure, scalable blockchain payment...",
-    views: 2400,
-  },
-  {
-    title: "Healthcare Data Visualization Dashboard",
-    description:
-      "Requesting a partner to design and implement an interactive dashboard for...",
-    views: 134,
-  },
-  {
-    title: "Machine Learning Model for Predictive Analytics",
-    description:
-      "Seeking machine learning experts to develop predictive analytics...",
-    views: 7400,
-  },
-];
 
-const RFPCard = ({ title, description, views }: RFPData) => (
-  <article className="my-auto flex w-[214px] min-w-[255px] shrink grow items-start gap-2 self-stretch overflow-hidden rounded-lg border border-solid border-slate-800 bg-slate-800 px-4 py-6 shadow-sm">
-    <div className="aspect-square w-12 shrink-0 rounded-full bg-[#94A3B8] p-2">
-      <DocumentTextIcon className="size-8" />
-    </div>
-    <div className="flex flex-1 shrink basis-0 flex-col">
-      <div className="flex w-full flex-col text-sm">
-        <h2 className="font-medium leading-5 text-gray-100">{title}</h2>
-        <p className="mt-1 text-ellipsis leading-5 text-gray-400">
-          {description}
-        </p>
+
+const RFPCard = ({rfp}: {rfp: RFP}) => (
+  <article className="w-[214px] min-w-[255px] shrink-0 grow">
+    <a href={`/view/${rfp.id}`} className="flex h-full items-start gap-2 overflow-hidden rounded-lg border border-slate-800 bg-slate-800 px-4 py-6 shadow-sm">
+      <div className="aspect-square w-12 shrink-0 rounded-full bg-[#94A3B8] p-2">
+        <DocumentTextIcon className="size-8" />
       </div>
-      <div className="mt-4 flex w-full items-center justify-between whitespace-nowrap text-xs font-medium leading-tight text-gray-400">
-        <div className="my-auto flex w-full flex-1 shrink basis-0 items-center gap-1.5 self-stretch">
-          <div className="my-auto aspect-square w-4 shrink-0 self-stretch object-contain">
-            <HeartIcon className="size-4 text-[#2388FF]" />
+      <div className="flex flex-1 flex-col">
+        <div className="flex flex-col text-sm">
+          <h2 className="font-medium leading-5 text-gray-100">{rfp.title}</h2>
+          <p className="mt-1 text-ellipsis leading-5 text-gray-400">
+            {rfp.data?.description ?? "Description"}	
+          </p>
+        </div>
+        <div className="mt-3 flex h-full flex-col text-sm font-medium leading-tight">
+          <div className="flex gap-3">
+            <span className="text-neutral-50">Deadline:</span>
+            <time className="text-red-400">
+              {rfp.data?.deadline
+                ? new Date(rfp.data?.deadline).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })
+                : "N/A"}
+            </time>
           </div>
-          <span className="my-auto self-stretch">{views.toLocaleString()}</span>
+          <div className="mt-3 text-orange-300">
+            {rfp.data?.budget ?? "N/A"}
+          </div>
         </div>
       </div>
-    </div>
+    </a>
   </article>
 );
 
-const Board = () => (
+const Board = () => {
+  const { data } = api.rfp.list.useQuery({
+    sort: 'date',
+    page: 1,
+  });
+  const { data: rfps = [] } = data ?? {};
+
+  return (
   <section className="container m-auto flex flex-col justify-center pb-40 pt-20 max-md:pb-24">
     <header className="flex w-full flex-col justify-center text-center text-white max-md:max-w-full">
       <h1 className="text-6xl font-medium leading-none tracking-tighter max-md:text-4xl">
@@ -71,9 +62,9 @@ const Board = () => (
         Discover opportunities, find the perfect match
       </p>
     </header>
-    <div className="mt-10 flex w-full flex-wrap items-center gap-4 max-md:max-w-full">
-      {rfpData.map((rfp, index) => (
-        <RFPCard key={index} {...rfp} />
+    <div className="mt-10 flex w-full flex-wrap items-stretch gap-4 max-md:max-w-full">
+      {rfps.map((rfp, index) => (
+        index < 4 && <RFPCard key={index} rfp={rfp as RFP} />
       ))}
     </div>
     <div className="mt-10 flex w-60 max-w-full flex-col items-center justify-center self-center overflow-hidden rounded-xl text-center text-sm font-medium leading-tight text-white">
@@ -94,5 +85,6 @@ const Board = () => (
     </a>
   </section>
 );
+};
 
 export default Board;
