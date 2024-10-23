@@ -54,7 +54,7 @@ const Board = () => {
   const { data: rfps = [] } = data ?? {};
 
   return (
-  <section className="container mx-auto flex flex-col justify-center pb-40 pt-20 max-md:pb-24">
+  <section className="container relative z-10 mx-auto flex flex-col justify-center pb-40 pt-20 max-md:pb-24">
     <header className="mx-4 flex flex-col justify-center text-center text-white max-md:max-w-full md:mx-auto">
       <h1 className="text-6xl font-medium leading-none tracking-tighter max-md:text-4xl">
         Explore RFPs

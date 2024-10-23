@@ -9,8 +9,8 @@ const Home = () => (
   <>
     <Header />
     <Hero />
-    <Bento />
     <Board />
+    <Bento />
     <VendorMatching />
     <Footer />
   </>
