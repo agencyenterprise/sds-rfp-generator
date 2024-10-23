@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Hero = () => (
-  <section className="mx-auto flex min-h-[80vsh] flex-col items-center pt-16 text-center">
+  <section className="mx-4 flex min-h-[80vsh] flex-col items-center pt-16 text-center md:mx-auto">
     <div className="absolute left-0 top-0 z-0 h-full w-[98.82svw] bg-gradient-to-b from-transparent to-black" />
     <div className="relative flex flex-col items-center max-md:max-w-full">
       <div className="flex max-w-[600px] flex-col">

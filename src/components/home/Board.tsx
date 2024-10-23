@@ -54,8 +54,8 @@ const Board = () => {
   const { data: rfps = [] } = data ?? {};
 
   return (
-  <section className="container m-auto flex flex-col justify-center pb-40 pt-20 max-md:pb-24">
-    <header className="flex w-full flex-col justify-center text-center text-white max-md:max-w-full">
+  <section className="container mx-auto flex flex-col justify-center pb-40 pt-20 max-md:pb-24">
+    <header className="mx-4 flex flex-col justify-center text-center text-white max-md:max-w-full md:mx-auto">
       <h1 className="text-6xl font-medium leading-none tracking-tighter max-md:text-4xl">
         Explore RFPs
       </h1>
@@ -79,7 +79,7 @@ const Board = () => {
     </div>
     <Link
       href="/generate"
-      className="mt-10 flex items-center justify-center gap-1.5 self-center text-center text-xs font-medium leading-tight text-white"
+      className="mx-auto mt-10 flex items-center justify-center gap-1.5 self-center text-center text-xs font-medium leading-tight text-white"
     >
       <span className="my-auto self-stretch">Or generate yours</span>
       <ArrowRightIcon className="size-3" />
