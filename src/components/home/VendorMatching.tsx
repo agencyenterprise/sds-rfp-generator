@@ -1,7 +1,7 @@
 import Image from "next/image";
 const VendorMatching = () => (
-  <section className="container m-auto flex flex-col">
-    <div className="relative flex flex-col items-start overflow-hidden rounded-lg border border-solid border-white/0 px-8 py-20 max-md:max-w-full max-md:px-5">
+  <section className="container">
+    <div className="relative mx-4 flex flex-col items-start overflow-hidden rounded-lg border border-solid border-white/0 px-4 py-20 max-md:max-w-full max-md:px-5 md:mx-auto md:px-8">
       <Image
         className="absolute left-2/4 top-2/4 z-0 aspect-[2.81] max-w-full -translate-x-2/4 -translate-y-2/4 rounded-2xl object-contain"
         loading="lazy"
@@ -38,7 +38,10 @@ const VendorMatching = () => (
             type="submit"
             className="absolute inset-y-1 right-1 gap-2 self-start rounded-lg bg-white px-4 py-1 text-center text-base font-medium leading-8 tracking-normal text-black"
           >
-            Join waitlist
+            Join 
+            <span className="hidden md:inline">
+              waitlist
+              </span>
           </button>
         </form>
       </div>
