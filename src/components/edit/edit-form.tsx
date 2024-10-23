@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type Tag, TagInput } from "emblor";
+import { TagInput } from "emblor";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -218,7 +218,7 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
                     field.value?.map((tag) => ({
                       id: tag,
                       text: tag,
-                    })) as Tag[]
+                    })) ?? []
                   }
                   setTags={(newTags) => {
                     const tags = Array.isArray(newTags)
