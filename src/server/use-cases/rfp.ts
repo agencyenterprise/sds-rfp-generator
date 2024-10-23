@@ -75,7 +75,8 @@ export async function createRFP(input: CreateRFPInput) {
       {
         role: "user",
         content: `
-          - Extract data from the attached RFP document and return it in JSON format. 
+          - Extract data from the attached RFP (Request for Proposal) document and return it in JSON format.
+          - If the file does not seem to be an RFP, return an empty JSON object.
           - Example output:
           {
             "budget": "500k - 800k USD",
