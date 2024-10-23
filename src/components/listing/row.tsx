@@ -2,10 +2,10 @@ import { type RFP } from "~/types/types";
 
 export function RFPRow({ rfp }: { rfp: RFP }) {
   return (
-    <li key={rfp.id} className={"border-b p-2"}>
+    <li key={rfp.id} className={"border-b px-2 py-6"}>
       <a href={`/view/${rfp.id}`}>
         <div className="flex items-center gap-2">
-          <div className="flex flex-col">
+          <div className="flex w-full flex-col">
             <div className="flex items-center justify-between">
               <span className="rounded-[80px] bg-gray-800 px-3 py-1 text-xs text-sky-400">
                 {rfp.data?.category ?? "General"}
