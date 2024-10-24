@@ -93,7 +93,7 @@ export default function ListingPage() {
             value={sort}
             onValueChange={(value) => setSort(value as SortOption)}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="md:w-[180px]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -103,6 +103,7 @@ export default function ListingPage() {
           </Select>
           <div className="flex gap-2">
             <Button
+              className="hidden md:flex"
               onClick={() => setDisplayMode("card")}
               variant={displayMode === "card" ? "secondary" : "outline"}
               size="icon"
@@ -110,6 +111,7 @@ export default function ListingPage() {
               <ViewColumnsIcon className="size-5" />
             </Button>
             <Button
+              className="hidden md:flex"
               onClick={() => setDisplayMode("row")}
               variant={displayMode === "row" ? "secondary" : "outline"}
               size="icon"
