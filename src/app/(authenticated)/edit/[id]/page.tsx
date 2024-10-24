@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 import { EditForm } from "~/components/edit/edit-form";
 import { PublishButton } from "~/components/edit/publish-button";
+import { Status } from "~/components/edit/Status";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/server";
 
@@ -56,7 +57,7 @@ export default async function EditRFPPage({
               </div>
             </a>
             <div className="inline-block rounded-full bg-[#131a23] px-3 py-1 text-sm text-[#47b0ff]">
-              {rfp.publishedAt ? "Published" : "Draft"}
+              <Status id={rfp.id} />
             </div>
           </div>
           <EditForm id={rfp.id} title={rfp.title!} data={rfp.data!} />

@@ -54,7 +54,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </header>
-      <div className="container mx-auto !px-4 py-16 lg:px-0">{children}</div>
+      <div className="container mx-auto !px-4 py-8 md:py-16 lg:px-0">
+        {children}
+      </div>
     </>
   );
 }

@@ -36,12 +36,12 @@ export default async function ViewRFPPage({
           </Button>
         )}
       </div>
-      <div className="grid grid-cols-4 gap-8">
+      <div className="flex flex-col gap-8 xl:grid xl:grid-cols-4">
         <div className="col-span-3">
           <div className="flex flex-col justify-between overflow-hidden rounded-lg border border-[#393f58] bg-[#23283d] px-4 py-6 shadow-[4px_2px_4px_rgba(25,33,61,0.08)]">
             <article className="flex w-full flex-col">
               <header className="flex w-full flex-col">
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
                   <span className="gap-2.5 self-start rounded-[80px] bg-gray-900 px-3 py-1 text-xs text-sky-400">
                     {rfp.data?.category ?? "General"}
                   </span>
@@ -90,8 +90,8 @@ export default async function ViewRFPPage({
           </div>
           {rfp.data?.fileUrl && (
             <div className="mt-8 inline-flex h-[662px] w-full flex-col items-start justify-start gap-8 rounded-lg border border-[#393f58] bg-[#23283d] p-6 shadow">
-              <div className="inline-flex items-center justify-between self-stretch">
-                <div className="text-base font-medium leading-tight text-neutral-50">
+              <div className="inline-flex items-center justify-between gap-4 self-stretch">
+                <div className="truncate text-base font-medium leading-tight text-neutral-50">
                   {rfp.data?.fileUrl.split("/").pop()}.pdf
                 </div>
                 <a

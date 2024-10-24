@@ -93,7 +93,7 @@ export default function ListingPage() {
             value={sort}
             onValueChange={(value) => setSort(value as SortOption)}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="md:w-[180px]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -103,6 +103,7 @@ export default function ListingPage() {
           </Select>
           <div className="flex gap-2">
             <Button
+              className="hidden md:flex"
               onClick={() => setDisplayMode("card")}
               variant={displayMode === "card" ? "secondary" : "outline"}
               size="icon"
@@ -110,6 +111,7 @@ export default function ListingPage() {
               <ViewColumnsIcon className="size-5" />
             </Button>
             <Button
+              className="hidden md:flex"
               onClick={() => setDisplayMode("row")}
               variant={displayMode === "row" ? "secondary" : "outline"}
               size="icon"
@@ -128,7 +130,8 @@ export default function ListingPage() {
       <ul
         className={cn(
           "grid gap-4",
-          displayMode === "card" && "grid-cols-1 lg:grid-cols-4",
+          displayMode === "card" &&
+            "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
         )}
       >
         {rfps?.map((rfp) =>
@@ -139,40 +142,42 @@ export default function ListingPage() {
           ),
         )}
       </ul>
-      <div className="my-8 flex items-center justify-center gap-2 pb-8">
-        <button
-          onClick={handlePreviousPage}
-          disabled={currentPage === 1}
-          className="my-auto flex min-h-[40px] items-center justify-center gap-1 self-stretch whitespace-nowrap rounded-md bg-white/0 py-2.5 pl-2.5 pr-4 text-sm font-medium leading-5 text-slate-400"
-        >
-          <ArrowLeftIcon className="size-5" />
-          <span>Previous</span>
-        </button>
-        {Array.from(
-          { length: pagination?.totalPages ?? 1 },
-          (_, index) => index + 1,
-        ).map((page) => (
+      {pagination?.totalPages && pagination.totalPages > 1 && (
+        <div className="my-8 flex items-center justify-center gap-2 pb-8">
           <button
-            key={page}
-            onClick={() => setCurrentPage(page)}
-            className={`my-auto size-10 min-h-[40px] self-stretch whitespace-nowrap rounded-md text-sm font-medium leading-5 ${
-              currentPage === page
-                ? "bg-slate-800 text-neutral-50"
-                : "bg-white/0 text-slate-400"
-            }`}
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            className="my-auto flex min-h-[40px] items-center justify-center gap-1 self-stretch whitespace-nowrap rounded-md bg-white/0 py-2.5 pl-2.5 pr-4 text-sm font-medium leading-5 text-slate-400"
           >
-            {page}
+            <ArrowLeftIcon className="size-5" />
+            <span>Previous</span>
           </button>
-        ))}
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === (pagination?.totalPages ?? 1)}
-          className="my-auto flex min-h-[40px] items-center justify-center gap-1 self-stretch whitespace-nowrap rounded-md bg-white/0 py-2.5 pl-2.5 pr-4 text-sm font-medium leading-5 text-slate-400"
-        >
-          <span>Next</span>
-          <ArrowRightIcon className="size-4" />
-        </button>
-      </div>
+          {Array.from(
+            { length: pagination?.totalPages ?? 1 },
+            (_, index) => index + 1,
+          ).map((page) => (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              className={`my-auto size-10 min-h-[40px] self-stretch whitespace-nowrap rounded-md text-sm font-medium leading-5 ${
+                currentPage === page
+                  ? "bg-slate-800 text-neutral-50"
+                  : "bg-white/0 text-slate-400"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === (pagination?.totalPages ?? 1)}
+            className="my-auto flex min-h-[40px] items-center justify-center gap-1 self-stretch whitespace-nowrap rounded-md bg-white/0 py-2.5 pl-2.5 pr-4 text-sm font-medium leading-5 text-slate-400"
+          >
+            <span>Next</span>
+            <ArrowRightIcon className="size-4" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
