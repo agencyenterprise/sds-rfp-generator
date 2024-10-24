@@ -12,6 +12,7 @@ import {
   GoalIcon,
   VoteIcon,
 } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -92,73 +93,94 @@ export default function Home() {
   }
 
   return (
-    <div className="flex p-10">
-      {/* Navigation Sidebar */}
-      <aside className="w-64">
-        <nav>
-          <ul className="space-y-4">
-            {steps.map((item, index) => (
-              <li key={index} className="mb-2">
-                <Button
-                  variant="ghost"
-                  className={cn(
-                    "w-full justify-start text-muted-foreground hover:text-primary",
-                    currentStep === index && "bg-secondary/80 text-primary",
-                  )}
-                  onClick={() => setCurrentStep(index)}
-                  disabled={generate.isPending}
-                >
-                  <item.icon className="mr-3 size-4" />
-                  <span>
-                    {index + 1}. {item.label}
-                  </span>
-                  {completedSteps.includes(index) && (
-                    <div className="ml-auto rounded-full bg-black p-1">
-                      <CheckIcon className="size-3 text-white" />
-                    </div>
-                  )}
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
+    <div className="space-y-8">
+      <Button variant="secondary" asChild>
+        <Link href="/">
+          <ArrowLeftIcon className="mr-2 size-4 text-primary" />
+          Back to RFP List
+        </Link>
+      </Button>
+      <header className="space-y-1.5">
+        <h1 className="text-5xl font-medium text-white">Generate RFP File</h1>
+        <p className="text-xl font-normal text-slate-400">
+          Fill out the form to generate your RFP file
+        </p>
+      </header>
+      <hr />
+      <div className="flex flex-col gap-8 md:flex-row">
+        {/* Navigation Sidebar */}
+        <aside className="w-full md:mb-0 md:w-64">
+          <nav className="hidden md:block">
+            <ul className="space-y-4">
+              {steps.map((item, index) => (
+                <li key={index} className="mb-2">
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "w-full justify-start text-muted-foreground hover:text-primary",
+                      currentStep === index && "bg-secondary/80 text-primary",
+                    )}
+                    onClick={() => setCurrentStep(index)}
+                    disabled={generate.isPending}
+                  >
+                    <item.icon className="mr-3 size-4" />
+                    <span>
+                      {index + 1}. {item.label}
+                    </span>
+                    {completedSteps.includes(index) && (
+                      <div className="ml-auto rounded-full bg-black p-1">
+                        <CheckIcon className="size-3 text-white" />
+                      </div>
+                    )}
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <div className="md:hidden">
+            <h2 className="mb-2 text-xl font-semibold">
+              Step {currentStep + 1} of {steps.length}
+            </h2>
+            <p className="text-muted-foreground">{steps[currentStep]?.label}</p>
+          </div>
+        </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 px-8">
-        <Card className="flex flex-col justify-between">
-          <div className="flex-1 px-20 py-10">
-            <h3 className="mb-10 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-              {steps[currentStep]?.label}
-            </h3>
-            <Form {...form}>
-              <form>{steps[currentStep]?.form}</form>
-            </Form>
-          </div>
-          <div className="border-t border-border px-20 py-4">
-            <div className="flex justify-between">
-              {currentStep > 0 && (
+        {/* Main Content */}
+        <main className="flex-1">
+          <Card className="flex flex-col justify-between">
+            <div className="flex-1 p-6 md:px-20 md:py-10">
+              <h3 className="mb-6 text-sm font-semibold uppercase tracking-widest text-muted-foreground md:mb-10">
+                {steps[currentStep]?.label}
+              </h3>
+              <Form {...form}>
+                <form>{steps[currentStep]?.form}</form>
+              </Form>
+            </div>
+            <div className="border-t border-border px-6 py-4 md:px-20">
+              <div className="flex justify-between">
+                {currentStep > 0 && (
+                  <Button
+                    variant="outline"
+                    onClick={handlePrevious}
+                    disabled={generate.isPending}
+                  >
+                    <ArrowLeftIcon className="mr-2 size-4" />
+                    Previous
+                  </Button>
+                )}
                 <Button
-                  variant="outline"
-                  onClick={handlePrevious}
+                  onClick={handleNext}
+                  className={currentStep === 0 ? "ml-auto" : ""}
                   disabled={generate.isPending}
                 >
-                  <ArrowLeftIcon className="mr-2 size-4" />
-                  Previous
+                  {currentStep === steps.length - 1 ? "Generate RFP" : "Next"}
+                  <ArrowRightIcon className="ml-2 size-4" />
                 </Button>
-              )}
-              <Button
-                onClick={handleNext}
-                className={currentStep === 0 ? "ml-auto" : ""}
-                disabled={generate.isPending}
-              >
-                {currentStep === steps.length - 1 ? "Generate RFP" : "Next"}
-                <ArrowRightIcon className="ml-2 size-4" />
-              </Button>
+              </div>
             </div>
-          </div>
-        </Card>
-      </main>
+          </Card>
+        </main>
+      </div>
     </div>
   );
 }
