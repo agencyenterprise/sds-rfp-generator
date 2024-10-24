@@ -243,7 +243,7 @@ export function EditForm({ id, title, data }: UpdateRFPInput) {
         <div className="flex w-full justify-between">
           <DeleteButton id={id} />
           <Button type="submit" disabled={isSubmitting} className="ml-auto">
-            {isSubmitting ? "Saving..." : "Save"}
+            {isSubmitting ? "Editing..." : "Edit"}
           </Button>
         </div>
       </form>
