@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 const Bento = () => (
-  <section className="flex flex-col items-center px-10 py-20 max-md:px-5">
+  <section className="mb-40 flex flex-col items-center px-10 max-md:px-5">
     <h2 className="w-[553px] text-center text-3xl font-medium leading-10 tracking-normal text-white max-md:max-w-full">
       Say goodbye to the confusing and time-consuming RFP craft
     </h2>
@@ -34,7 +34,7 @@ const Bento = () => (
           height={400}
         />
         <div className="absolute left-0 top-0 z-10 size-full bg-gradient-to-t from-[#254DA4] to-transparent" />
-        <div className="z-20 flex h-full min-h-[260px] md:min-h-0 max-w-full flex-col justify-end text-center md:text-left">
+        <div className="z-20 flex h-full min-h-[260px] max-w-full flex-col justify-end text-center md:min-h-0 md:text-left">
           <h3 className="font-medium leading-8 text-white md:max-w-full">
             Designed for tech
           </h3>
